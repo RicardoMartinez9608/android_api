@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -86,20 +88,20 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        Fragment miFragment= null;
-        boolean FragmentSeleccionado = false;
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+       // Fragment miFragment= null;
+       // boolean FragmentSeleccionado = false;
 
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
-            miFragment = new RedFragment();
-            FragmentSeleccionado = true;
+            transaction.replace(R.id.content_main,new RedFragment()).commit();
+         //   miFragment = new RedFragment();
+        //    FragmentSeleccionado = true;
         } else if (id == R.id.nav_slideshow) {
-            miFragment = new GreenFragment();
-            FragmentSeleccionado = true;
-
+        //    miFragment = new GreenFragment();
+        //    FragmentSeleccionado = true;
+            transaction.replace(R.id.content_main,new GreenFragment()).commit();
 
         } else if (id == R.id.nav_tools) {
 
@@ -109,10 +111,10 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        if (FragmentSeleccionado == true){
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,miFragment).commit();
+      //  if (FragmentSeleccionado == true){
+        //    getSupportFragmentManager().beginTransaction().replace(R.id.content_main,miFragment).commit();
 
-        }
+        //}
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

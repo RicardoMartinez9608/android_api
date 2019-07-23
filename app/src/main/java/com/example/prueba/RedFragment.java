@@ -71,7 +71,7 @@ public class RedFragment extends Fragment {
         final Runnable runnable=new Runnable() {
                 @Override
             public void run() {
-                handler.postDelayed(this,1000);
+                //handler.postDelayed(this,1000);
                 ObtenerLista();
             }
         };
@@ -102,7 +102,7 @@ public class RedFragment extends Fragment {
                                     pagosjson.getTransaccion().getSaldoCapital()
                             ));
                 }
-                pagos_lista = (ListView)getView().findViewById(R.id.pagos_lista);
+                pagos_lista = (ListView)getActivity().findViewById(R.id.pagos_lista);
                 final Item_Pago items = new Item_Pago(this,pagos);
                 pagos_lista.setAdapter(items);
 
