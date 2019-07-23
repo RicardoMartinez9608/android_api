@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity
             miFragment = new GreenFragment();
             FragmentSeleccionado = true;
 
+
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {
