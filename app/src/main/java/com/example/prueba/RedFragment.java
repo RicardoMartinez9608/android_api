@@ -36,6 +36,17 @@ import java.util.concurrent.ExecutionException;
 public class RedFragment extends Fragment {
     private String key;
     //
+
+    public static final String TAG = "RedFragment";
+
+    public static RedFragment newInstance(Bundle arguments){
+        RedFragment f = new RedFragment();
+        if(arguments != null){
+            f.setArguments(arguments);
+        }
+        return f;
+    }
+
     ListView pagos_lista;
 
     public RedFragment() {

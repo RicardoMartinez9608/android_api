@@ -19,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
 
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+
             miFragment = new RedFragment();
             FragmentSeleccionado = true;
         } else if (id == R.id.nav_slideshow) {
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity
 
         if (FragmentSeleccionado == true){
             getSupportFragmentManager().beginTransaction().replace(R.id.content_main,miFragment).commit();
+
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
