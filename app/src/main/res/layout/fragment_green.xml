@@ -3,13 +3,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GreenFragment"
-    android:background="@android:color/holo_green_light">
+    tools:context=".GreenFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/principal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="HOLA VERDE" />
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="vertical" >
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Buscar cliente NIT u DUI"
+            android:textColor="?android:attr/colorActivatedHighlight"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/parametro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_dark"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="10px"
+            android:text="datos del cliente"
+            android:textColor="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/buscar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:background="?android:attr/colorActivatedHighlight"
+            android:text="Buscar"
+            android:textColor="@android:color/background_light" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="60dp"
+            android:text="Información del cliente"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/nombre_completo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre completo" />
+
+        <TextView
+            android:id="@+id/dui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DUI" />
+
+        <TextView
+            android:id="@+id/nit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NIT" />
+
+        <TextView
+            android:id="@+id/fecha_nacimiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha Nacimiento" />
+    </LinearLayout>
 
 </FrameLayout>
