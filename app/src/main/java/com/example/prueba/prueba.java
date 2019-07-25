@@ -36,8 +36,8 @@ public class prueba extends AppCompatActivity implements View.OnClickListener{
         acceder.setOnClickListener(this);
 
         /*valores de prueba*/
-        usuario.setText("efrain_ascencio");
-        contrasena.setText("Efrain_ascencio_2018");
+        usuario.setText("noelnio@hotmail.com");
+        contrasena.setText("Inteligencia_2018");
     }
 
     @Override

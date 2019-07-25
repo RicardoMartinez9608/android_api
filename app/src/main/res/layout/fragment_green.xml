@@ -42,7 +42,8 @@
             android:layout_marginTop="20px"
             android:background="?android:attr/colorActivatedHighlight"
             android:text="Buscar"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:onClick="onClick"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -88,7 +89,8 @@
             android:background="?android:attr/colorActivatedHighlight"
             android:text="Ubicar"
             android:layout_margin="100dp"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:onClick="onClick"/>
     </LinearLayout>
 
 </FrameLayout>

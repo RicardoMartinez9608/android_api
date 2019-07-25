@@ -1,8 +1,14 @@
 package com.example.prueba.Helper;
 
+
+
 import java.io.Serializable;
 
-public class Persona implements Serializable {
+
+
+public class Persona implements Serializable
+{
+
     private float id_Persona;
     private float id_Cartera;
     private String cartera = null;
@@ -223,6 +229,7 @@ public class Persona implements Serializable {
     }
 
     public String getFechaNacimiento() {
+
         return fechaNacimiento;
     }
 
