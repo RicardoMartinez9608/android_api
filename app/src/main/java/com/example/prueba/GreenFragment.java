@@ -3,12 +3,12 @@ package com.example.prueba;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
+
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +24,11 @@ import com.google.gson.Gson;
 
 import org.apache.http.impl.client.BasicCookieStore;
 
-import java.security.PublicKey;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Locale;
+
 import java.util.concurrent.ExecutionException;
 
 
@@ -42,11 +42,13 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
     private Button Ubicacion;
     private TextView nombre_completo;
     private TextView dui;
+    public String nombre_c;
+    public String duiU;
     private TextView nit;
     private TextView fecha_nacimiento;
+    public int id_Persona;
     private String key;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    Date date = new Date();
+
     public GreenFragment() {
         // Required empty public constructor
     }
@@ -66,6 +68,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         fecha_nacimiento=(TextView) v.findViewById(R.id.fecha_nacimiento);
         parametro.setText("03209799-4");
 
+
         buscar.setOnClickListener((View.OnClickListener) this);
         try {
             Intent intent = getActivity().getIntent();
@@ -82,15 +85,15 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 //transaction.replace(R.id.content_main,new UbicacionGPS()).commit();
 
                 Intent intent = new Intent(getActivity(),gps.class);
+                intent.putExtra("Id_usuario",String.valueOf(id_Persona));
+                intent.putExtra("nombreC", String.valueOf(nombre_c));
+                intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
             }
         });
         return v;
 
     }
-
-
-
 
     public void onClick(View view) {
         ConexionApi cp=new ConexionApi();
@@ -101,10 +104,13 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
             String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+parametro.getText().toString(),"Operacion",gsonCuerpo).get();
             Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
 
-            nombre_completo.setText("Nombre Completo: " +persona.getNombreCompleto());
+            nombre_completo.setText(persona.getNombreCompleto());
             dui.setText("DUI: "+persona.getDui());
             nit.setText("NIT: "+persona.getNit());
             fecha_nacimiento.setText("Fecha de Nacimiento: "+persona.getFechaNacimiento());
+            id_Persona=Math.round(persona.getId_Persona());
+            nombre_c =  persona.getNombreCompleto();
+            duiU = persona.getDui();
 
 
         } catch (InterruptedException e) {
@@ -115,10 +121,6 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
 
 
     }
-
-
-
-
 
     private class ConexionAPI extends ConexionApi {
         public ConexionAPI(){
