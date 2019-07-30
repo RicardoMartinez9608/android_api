@@ -78,8 +78,11 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         Ubicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_main,new UbicacionGPS()).commit();
+               //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                //transaction.replace(R.id.content_main,new UbicacionGPS()).commit();
+
+                Intent intent = new Intent(getActivity(),gps.class);
+                startActivity(intent);
             }
         });
         return v;
