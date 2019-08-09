@@ -1,20 +1,20 @@
 package com.example.prueba.Helper;
 
 public class Ubicacion_Persona {
-    private float id_persona;
-    private String tipo_ubicacion;
+    private int id_Persona;
+    private String tipo_Ubicacion;
     private String lat;
     private String longi;
 
 
     // Getter Methods
 
-    public float getId_persona() {
-        return id_persona;
+    public float getId_Persona() {
+        return id_Persona;
     }
 
-    public String getTipo_ubicacion() {
-        return tipo_ubicacion;
+    public String getTipo_Ubicacion() {
+        return tipo_Ubicacion;
     }
 
     public String getLat() {
@@ -27,12 +27,12 @@ public class Ubicacion_Persona {
 
     // Setter Methods
 
-    public void setId_persona(float id_persona) {
-        this.id_persona = id_persona;
+    public void setId_Persona(int id_Persona) {
+        this.id_Persona = id_Persona;
     }
 
-    public void setTipo_ubicacion(String tipo_ubicacion) {
-        this.tipo_ubicacion = tipo_ubicacion;
+    public void setTipo_Ubicacion(String tipo_Ubicacion) {
+        this.tipo_Ubicacion = tipo_Ubicacion;
     }
 
     public void setLat(String lat) {

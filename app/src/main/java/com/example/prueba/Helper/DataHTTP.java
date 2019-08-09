@@ -6,14 +6,16 @@ public class DataHTTP implements Serializable {
     private String Nombre;
     private String Valor;
     private String Verbo;
+    private String Contenido;
 
     public DataHTTP() {
     }
 
-    public DataHTTP(String nombre, String valor, String verbo) {
+    public DataHTTP(String nombre, String valor, String verbo, String contenido ) {
         Nombre = nombre;
         Valor = valor;
         Verbo = verbo;
+        Contenido = contenido;
     }
 
     public String getNombre() {
@@ -39,4 +41,13 @@ public class DataHTTP implements Serializable {
     public void setVerbo(String verbo) {
         Verbo = verbo;
     }
+
+    public String getContenido() {
+        return Contenido;
+    }
+
+    public void setContenido(String contenido) {
+        Contenido = contenido;
+    }
+
 }

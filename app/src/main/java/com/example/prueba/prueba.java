@@ -47,7 +47,7 @@ public class prueba extends AppCompatActivity implements View.OnClickListener{
         Login login=new Login(usuario.getText().toString(),contrasena.getText().toString());
         String gsonLogin=new Gson().toJson(login);
         List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        listData.add(new DataHTTP("login",gsonLogin,"post"));
+        listData.add(new DataHTTP("login",gsonLogin,"post",""));
         String gsonCuerpo=new Gson().toJson(listData);
 
         try {

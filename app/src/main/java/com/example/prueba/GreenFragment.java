@@ -3,32 +3,22 @@ package com.example.prueba;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.Persona;
 import com.google.gson.Gson;
-
 import org.apache.http.impl.client.BasicCookieStore;
-
-
 import java.util.ArrayList;
-
 import java.util.List;
-
 import java.util.concurrent.ExecutionException;
 
 
@@ -66,7 +56,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         dui=(TextView) v.findViewById(R.id.dui);
         nit=(TextView) v.findViewById(R.id.nit);
         fecha_nacimiento=(TextView) v.findViewById(R.id.fecha_nacimiento);
-        parametro.setText("03209799-4");
+        parametro.setText("00603574-7");
 
 
         buscar.setOnClickListener((View.OnClickListener) this);
@@ -98,15 +88,15 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         ConexionApi cp=new ConexionApi();
         List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        listData.add(new DataHTTP("buscar_cliente",key,"post"));
+        listData.add(new DataHTTP("buscar_cliente",key,"post",""));
         String gsonCuerpo=new Gson().toJson(listData);
         try {
             String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+parametro.getText().toString(),"Operacion",gsonCuerpo).get();
             Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
 
-            nombre_completo.setText(persona.getNombreCompleto());
-            dui.setText("DUI: "+persona.getDui());
-            nit.setText("NIT: "+persona.getNit());
+            nombre_completo.setText("Nombre del Cliente:   "+persona.getNombreCompleto());
+            dui.setText("                              DUI:    "+persona.getDui());
+            nit.setText("                              NIT:    "+persona.getNit());
             fecha_nacimiento.setText("Fecha de Nacimiento: "+persona.getFechaNacimiento());
             id_Persona=Math.round(persona.getId_Persona());
             nombre_c =  persona.getNombreCompleto();

@@ -6,7 +6,6 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -41,8 +40,7 @@ this.tvMensaje = tvMensaje;
         FragmentManager fragmentManager = getGps().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment, fragment, null);
-        fragmentTransaction.commit();
-
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     @Override

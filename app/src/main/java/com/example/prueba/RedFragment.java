@@ -84,7 +84,7 @@ public class RedFragment extends Fragment {
     {
         ConexionApi cp=new ConexionApi();
         List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        listData.add(new DataHTTP("buscar_cliente",key,"get"));
+        listData.add(new DataHTTP("buscar_cliente",key,"get",""));
         String gsonCuerpo=new Gson().toJson(listData);
         try {
             String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Transacciones_Credito/Pagos_Realizados","Operacion",gsonCuerpo).get();

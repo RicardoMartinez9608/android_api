@@ -24,7 +24,7 @@ public class Persona implements Serializable
     private float id_Departamento_Pais_Domicilio;
     private float id_Municipio_Departamento_Domicilio;
     private String domicilio;
-    private String latitud_Domicilio = null;
+    private String latitud_Domicilio ;
     private String longitud_Domicilio = null;
     private boolean es_Empleado;
     private float id_Departamento_Pais_Direccion_Trabajo;

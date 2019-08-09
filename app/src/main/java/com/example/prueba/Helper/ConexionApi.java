@@ -30,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.prueba.gps;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -142,6 +143,7 @@ public class ConexionApi extends AsyncTask<String, Void, String> {
 
             String strdata = null;
             String jsonString = "" ;
+            String valor = "";
 
             JSONObject json=new JSONObject();
             for(int i=0;i<datos.length;i++){
@@ -161,7 +163,6 @@ public class ConexionApi extends AsyncTask<String, Void, String> {
 
                         response=httpClient.execute(request);
                     }
-
                     if(verbo.equals("post"))
                     {
                         HttpClient httpClient= new DefaultHttpClient();
@@ -179,8 +180,27 @@ public class ConexionApi extends AsyncTask<String, Void, String> {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
                     while( (strdata =reader.readLine())!=null)
                         jsonString += strdata;
-                }else
+
+                }else if(nombre.equals("coordenadas")){
+                    HttpResponse response=null;
+                    String verbo=datos[i].getVerbo();
+                    if(verbo.equals("put"))
+                    {
+                        HttpClient httpClient= new DefaultHttpClient();
+                        HttpPut request=new HttpPut(url);
+                        request.setHeader("Accept", "application/json");
+                        request.setHeader("Content-type", "application/json");
+                        StringEntity stringEntity = new StringEntity(datos[i].getContenido());
+                        request.setEntity(stringEntity);
+                        String token=datos[i].getValor();
+                        request.setHeader("Authorization","Bearer "+token);
+
+                        response=httpClient.execute(request);
+                    }
+
+                }else{
                     break;
+                }
             }
             //return  response.getStatusLine().getStatusCode();
             return jsonString;
