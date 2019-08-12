@@ -1,5 +1,6 @@
 package com.example.prueba;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationProvider;
@@ -12,21 +13,33 @@ import androidx.fragment.app.FragmentTransaction;
 public class Localizacion implements LocationListener {
 gps gps;
 TextView tvMensaje;
+TextView lon;
+TextView lati;
 
 public gps getGps(){return gps;}
-public void setGps (gps gps, TextView tvMensaje){
+public void setGps(gps gps, TextView lati, TextView lon){
 this.gps = gps;
-this.tvMensaje = tvMensaje;
+this.lon = lon;
+this.lati = lati;
 }
 
     @Override
     public void onLocationChanged(Location location) {
         //este metodo se ejecuta cuando el GPS recibe nuevas coordenadas
-        String texto = "Mi Ubicación es: \n"
-                + "Latitud = " + location.getLatitude() + "\n"
-                +  "Longitud = " + location.getLongitude();
-        tvMensaje.setText(texto);
+    //    String texto = "Mi Ubicación es: \n"
+    //            + "Latitud = " + location.getLatitude() + "\n"
+  //              +  "Longitud = " + location.getLongitude();
+   //     tvMensaje.setText(texto);
+
+        String t1 = String.valueOf(location.getLatitude());
+        String t2 = String.valueOf(location.getLongitude());
+        lati.setText(t1);
+        lon.setText(t2);
+
         mapa(location.getLatitude(), location.getLongitude());
+
+
+
     }
 
     public void mapa(double lat, double lon) {

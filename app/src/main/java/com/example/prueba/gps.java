@@ -1,8 +1,7 @@
 package com.example.prueba;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -12,30 +11,26 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.Persona;
 import com.example.prueba.Helper.Ubicacion_Persona;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import org.apache.http.impl.client.BasicCookieStore;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class gps extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     TextView tvMensaje;
+    TextView LongitudAc;
+    TextView LatitudAC;
     TextView ID;
     String dato ;
-    Bundle id;
+   public Bundle id;
     Bundle nombreCompleto;
     Bundle DUI;
     TextView nombre;
@@ -44,32 +39,50 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
     TextView UbicacionEn;
     TextView LongitudEn;
     TextView LatitudEn;
+    Button Atras;
     private String key;
     //minimo tiempo para updates en milisegundos
     private static final long MIN_TIME = 10000; // 10 segundos
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
-
+        LongitudAc = findViewById(R.id.LongitudActual);
+        LatitudAC = findViewById(R.id.LatitudActual);
         tvMensaje = findViewById(R.id.tvMensaje);
-        ID = findViewById(R.id.txtTipoUbicacion);
+        ID = findViewById(R.id.id);
         nombre = findViewById(R.id.nombre_completo);
         dui = findViewById(R.id.dui);
         UbicacionEn = findViewById(R.id.UbicacionEncontrada);
         LongitudEn = findViewById(R.id.LongitudEncontrada);
         LatitudEn = findViewById(R.id.LatitudEncontrada);
+        Atras = findViewById(R.id.Regresar);
         ubicaciones = findViewById(R.id.spinner);
         ubicaciones.setOnItemSelectedListener(this);
+        //Metodo para regresar al fragment de seleccion de cliente
+        Atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStackImmediate();
+                }else{
+                    finish();
+
+                }
+            }
+        });
         //ID de usuario
         id = getIntent().getExtras();
         nombreCompleto = getIntent().getExtras();
         DUI = getIntent().getExtras();
+
         String IDobtenido = id.getString("Id_usuario");
         String nombreObtenido = nombreCompleto.getString("nombreC");
         String duiObtenido = DUI.getString("DUI");
-        //ID.setText(IDobtenido);
+        ID.setText(IDobtenido);
         nombre.setText("Nombre del Cliente: " +nombreObtenido);
         dui.setText(duiObtenido);
 
@@ -88,7 +101,8 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
         Localizacion local = new Localizacion();
 
-        local.setGps(this,tvMensaje);
+        local.setGps(this,LatitudAC,LongitudAc);
+
 
         final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!gpsEnabled){
@@ -132,7 +146,7 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
             if (indice == 0){
                 LatitudEn.setText("Latitud  "+persona.getLatitud_Domicilio());
-                LongitudEn.setText("Longitud " + persona.getLatitud_Domicilio());
+                LongitudEn.setText("Longitud " + persona.getLongitud_Domicilio());
             }else if(indice == 1){
                 LatitudEn.setText("Latitud "+persona.getLatitud_Direccion_Negocio());
                 LongitudEn.setText("Longitud " + persona.getLongitud_Direccion_Negocio());
@@ -146,6 +160,8 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             e.printStackTrace();
         }
     }
+
+
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -153,15 +169,22 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
     @Override
     public void onClick(View view) {
+        int indice = ubicaciones.getSelectedItemPosition();
+        String tipo = "";
         ConexionApi cp=new ConexionApi();
         List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        Ubicacion_Persona ubicacion = new Ubicacion_Persona();
-        int id = 17;
-        String tipo = "Trabajo";
-        String lat = "00000";
-        String longi = "0010101";
+        if (indice ==0){
+             tipo = "Domicilio";
+        }else if (indice == 1){
+            tipo = "Negocio";
+        }else if (indice==2){
+            tipo = "Trabajo";
+        }
 
-        ubicacion.setId_Persona(id);
+        String lat = LatitudAC.getText().toString();
+        String longi = LongitudAc.getText().toString();
+        Ubicacion_Persona ubicacion = new Ubicacion_Persona();
+        ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
         ubicacion.setTipo_Ubicacion(tipo);
         ubicacion.setLat(lat);
         ubicacion.setLong(longi);
@@ -177,7 +200,13 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+
     }
+
+
+
+
 
     private class ConexionAPI extends ConexionApi {
         public ConexionAPI(){

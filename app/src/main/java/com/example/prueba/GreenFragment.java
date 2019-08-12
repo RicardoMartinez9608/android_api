@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.Persona;
+import com.example.prueba.Helper.Ubicacion_Persona;
 import com.google.gson.Gson;
 import org.apache.http.impl.client.BasicCookieStore;
 import java.util.ArrayList;
@@ -68,7 +69,9 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         }
 
         Ubicacion = (Button) v.findViewById(R.id.Ubicacion);
-        Ubicacion.setOnClickListener(new View.OnClickListener() {
+        Ubicacion.setVisibility(View.INVISIBLE);
+        Ubicacion.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -79,6 +82,8 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("nombreC", String.valueOf(nombre_c));
                 intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
+                //Deshabilitar control durante 7 segundos
+                Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 7000);
             }
         });
         return v;
@@ -101,6 +106,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
             id_Persona=Math.round(persona.getId_Persona());
             nombre_c =  persona.getNombreCompleto();
             duiU = persona.getDui();
+            Ubicacion.setVisibility(View.VISIBLE);
 
 
         } catch (InterruptedException e) {
