@@ -1,9 +1,11 @@
 package com.example.prueba;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -169,37 +171,54 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
     @Override
     public void onClick(View view) {
-        int indice = ubicaciones.getSelectedItemPosition();
-        String tipo = "";
-        ConexionApi cp=new ConexionApi();
-        List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        if (indice ==0){
-             tipo = "Domicilio";
-        }else if (indice == 1){
-            tipo = "Negocio";
-        }else if (indice==2){
-            tipo = "Trabajo";
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Quiere actualizar la Ubicacion de su cliente");
+        builder.setTitle("Satelite");
+        builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                int indice = ubicaciones.getSelectedItemPosition();
+                String tipo = "";
+                ConexionApi cp=new ConexionApi();
+                List<DataHTTP> listData= new ArrayList<DataHTTP>();
+                if (indice ==0){
+                    tipo = "Domicilio";
+                }else if (indice == 1){
+                    tipo = "Negocio";
+                }else if (indice==2){
+                    tipo = "Trabajo";
+                }
 
-        String lat = LatitudAC.getText().toString();
-        String longi = LongitudAc.getText().toString();
-        Ubicacion_Persona ubicacion = new Ubicacion_Persona();
-        ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
-        ubicacion.setTipo_Ubicacion(tipo);
-        ubicacion.setLat(lat);
-        ubicacion.setLong(longi);
-        Gson gson = new Gson();
-        String JSON = gson.toJson(ubicacion);
-        listData.add(new DataHTTP("coordenadas",key,"put",JSON));
-        String gsonCuerpo=new Gson().toJson(listData);
-        try {
+                String lat = LatitudAC.getText().toString();
+                String longi = LongitudAc.getText().toString();
+                Ubicacion_Persona ubicacion = new Ubicacion_Persona();
+                ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
+                ubicacion.setTipo_Ubicacion(tipo);
+                ubicacion.setLat(lat);
+                ubicacion.setLong(longi);
+                Gson gson = new Gson();
+                String JSON = gson.toJson(ubicacion);
+                listData.add(new DataHTTP("coordenadas",key,"put",JSON));
+                String gsonCuerpo=new Gson().toJson(listData);
+                try {
 
-            String respuestaLogin= cp.execute("http://190.86.177.177/pordefecto/api/Personas/Actualizar_Ubicacion_Persona","Operacion", gsonCuerpo).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+                    String respuestaLogin= cp.execute("http://190.86.177.177/pordefecto/api/Personas/Actualizar_Ubicacion_Persona","Operacion", gsonCuerpo).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
 
     }

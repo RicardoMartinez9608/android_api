@@ -30,9 +30,10 @@
             android:layout_height="wrap_content"
             android:background="@android:color/holo_blue_dark"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="phone"
             android:padding="10px"
-            android:text="datos del cliente"
+            android:maxLength="10"
+            android:text="       - "
             android:textColor="@android:color/background_light" />
 
         <Button
