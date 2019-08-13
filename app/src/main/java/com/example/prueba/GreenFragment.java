@@ -123,9 +123,6 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                    Ubicacion.setVisibility(View.VISIBLE);
                }
 
-
-
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

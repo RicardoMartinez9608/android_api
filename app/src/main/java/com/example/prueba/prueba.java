@@ -53,14 +53,18 @@ public class prueba extends AppCompatActivity implements View.OnClickListener{
 
             try {
                 String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Account/Login","Login",gsonCuerpo).get();
-                if(respuestaLogin!="")
+                if(respuestaLogin=="")
                 {
+                    Toast toast = Toast.makeText(this, "Usuario o Contraseña Invalidos", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                    usuario.setText("");
+                    contrasena.setText("");
 
-
+                }else {
                     Intent pagos_corriente=new Intent(this,MainActivity.class);
                     pagos_corriente.putExtra("token",respuestaLogin.replace('"', ' ').trim());
                     startActivity(pagos_corriente);
-
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
