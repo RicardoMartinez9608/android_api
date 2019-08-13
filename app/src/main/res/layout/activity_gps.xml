@@ -14,213 +14,229 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <TextView
-            android:id="@+id/txtubicacion"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="Ubicación de Cliente"
-            android:textColor="?android:attr/colorActivatedHighlight"
-            android:textSize="18sp" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/idemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No. Correlativo:     " />
-            <TextView
-                android:id="@+id/id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/nombre_completo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nombre completo" />
-
-        <TextView
-            android:id="@+id/dui"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DUI" />
-
-        <TextView
-            android:id="@+id/txtTipoUbicacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="left"
-            android:text="Seleccione el tipo de ubicación"
-            android:textColor="?android:attr/colorActivatedHighlight"
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:entries="@array/ubicaciones" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="180dp"
-                android:layout_height="80dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/tvMensaje"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtubicacion"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ubicacion Actual"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="Ubicación de Cliente"
+                    android:textColor="?android:attr/colorActivatedHighlight"
+                    android:textSize="18sp" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <TextView
-                        android:id="@+id/Latitud"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/idemp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Latitud:    "
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:text="No. Correlativo:     " />
                     <TextView
-                        android:id="@+id/LatitudActual"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/id"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0.0 "
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
+                        android:text="0" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/nombre_completo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre completo" />
+
+                <TextView
+                    android:id="@+id/dui"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DUI" />
+
+                <TextView
+                    android:id="@+id/txtTipoUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="left"
+                    android:text="Seleccione el tipo de ubicación"
+                    android:textColor="?android:attr/colorActivatedHighlight"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:entries="@array/ubicaciones" />
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/Longitud"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Longitud: "
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="180dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tvMensaje"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ubicacion Actual"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/LongitudActual"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.0 "
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/Latitud"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Latitud:    "
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/LatitudActual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.0 "
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/Longitud"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Longitud: "
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/LongitudActual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.0 "
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+
+                        android:layout_width="195dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/UbicacionEncontrada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ubicacion Obtenida: "
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/LatitudEncontrada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Latitud: "
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/LongitudEncontrada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Longitud: "
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
+                <fragment
+                    android:id="@+id/fragment"
+                    android:name="com.example.prueba.FragmentMaps"
+                    android:layout_width="350dp"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMensaje"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/Ubicacion"
+                        android:name= "de.androidbuch.activiti.task.TaskDetailsFragment"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="?android:attr/colorActivatedHighlight"
+                        android:text="Actualizar"
+                        android:textColor="@android:color/background_light"
+                        android:onClick="onClick"/>
+                    <Button
+                        android:id="@+id/Regresar"
+                        android:name= "de.androidbuch.activiti.task.TaskDetailsFragment"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="?android:attr/colorActivatedHighlight"
+                        android:text="Regresar"
+                        android:textColor="@android:color/background_light"
+                        android:onClick="onClick"/>
+
+                </LinearLayout>
+
+
+
             </LinearLayout>
+        </ScrollView>
 
 
-
-            <LinearLayout
-
-                android:layout_width="195dp"
-                android:layout_height="80dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/UbicacionEncontrada"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ubicacion Obtenida: "
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/LatitudEncontrada"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Latitud: "
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/LongitudEncontrada"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Longitud: "
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <fragment
-            android:id="@+id/fragment"
-            android:name="com.example.prueba.FragmentMaps"
-            android:layout_width="350dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMensaje"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/Ubicacion"
-                android:name= "de.androidbuch.activiti.task.TaskDetailsFragment"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="?android:attr/colorActivatedHighlight"
-                android:text="Actualizar"
-                android:textColor="@android:color/background_light"
-                android:onClick="onClick"/>
-            <Button
-                android:id="@+id/Regresar"
-                android:name= "de.androidbuch.activiti.task.TaskDetailsFragment"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="?android:attr/colorActivatedHighlight"
-                android:text="Regresar"
-                android:textColor="@android:color/background_light"
-                android:onClick="onClick"/>
-
-        </LinearLayout>
 
     </LinearLayout>
 
