@@ -121,7 +121,7 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, 0,local);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, 0,local);
 
-        tvMensaje.setText("Localizacion Agregada");
+        tvMensaje.setText("Localizacion Actual");
 
     }
 
