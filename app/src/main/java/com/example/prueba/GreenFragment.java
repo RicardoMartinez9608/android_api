@@ -61,7 +61,6 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         nombre_completo=(TextView)v.findViewById(R.id.nombre_completo);
         dui=(TextView) v.findViewById(R.id.dui);
         nit=(TextView) v.findViewById(R.id.nit);
-        fecha_nacimiento=(TextView) v.findViewById(R.id.fecha_nacimiento);
         parametro.setText("00603574-7");
 
 

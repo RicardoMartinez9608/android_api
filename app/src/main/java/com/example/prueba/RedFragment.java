@@ -16,17 +16,13 @@ import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.Item_Pago;
 import com.example.prueba.Helper.Pago;
 import com.example.prueba.Helper.PagoCorriente;
-import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.apache.http.impl.client.BasicCookieStore;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import java.util.concurrent.ExecutionException;
 
 

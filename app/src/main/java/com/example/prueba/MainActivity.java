@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             transaction.replace(R.id.content_main,new GreenFragment()).commit();
 
         } else if (id == R.id.nav_tools) {
-
+            transaction.replace(R.id.content_main,new CalculoCredito()).commit();
         }
 
       //  if (FragmentSeleccionado == true){
