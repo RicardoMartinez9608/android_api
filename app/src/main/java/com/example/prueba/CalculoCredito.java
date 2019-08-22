@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.prueba.Helper.Calculo_Credito;
 import com.example.prueba.Helper.ConexionApi;
@@ -53,7 +55,6 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_calculo_credito, container, false);
 
-
         idlinea = v.findViewById(R.id.idlinea);
         descripcionLinea =(Spinner) v.findViewById(R.id.linea);
         descripcionLinea.setOnItemSelectedListener(this);
@@ -68,37 +69,45 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
         Plazo = v.findViewById(R.id.txtplazo);
         frecuencia.setOnItemSelectedListener(this);
         FrecuenciaPagos();
-
         calcular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConexionApi cp=new ConexionApi();
-                List<DataHTTP> listData= new ArrayList<DataHTTP>();
-                listData.add(new DataHTTP("buscar_cliente",key,"post",""));
-                String gsonCuerpo=new Gson().toJson(listData);
-                int linea = Integer.parseInt( idlinea.getText().toString().trim());
-                double monto = Double.parseDouble(Monto.getText().toString().trim());
-                int periodo =Integer.parseInt(idfrecuencia.getText().toString().trim());
-                int plazo = Integer.parseInt(Plazo.getText().toString().trim());
-                int credito= 0;
-                try {
-                    String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Creditos/CuotaPrimaria?id_linea="+linea+"&monto="+monto+"&id_periodo="+periodo+"&plazo="+plazo+"&id_credito="+credito,"Operacion",gsonCuerpo).get();
-                    Calculo_Credito calculo_credito =new Gson().fromJson(respuestaLogin,Calculo_Credito.class);
-                    Integer size = calculo_credito.amortizacion.size();
-                    Ncuotas.setText(String.valueOf(size));
-                    Cuotas.setText(String.valueOf("$ "+ calculo_credito.getCuotaTotal()));
-                    float totalpago =  size * calculo_credito.getCuotaTotal();
-                    TotalaPagar.setText(String.valueOf("$ "+ totalpago));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+                if(Monto.getText().toString().isEmpty()){
+                    Toast toast = Toast.makeText(getContext(), "Monto a Calcular está Vacio", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    if (Plazo.getText().toString().isEmpty()){
+                        Toast toast = Toast.makeText(getContext(), "Plazo a Calcular está Vacio", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }else {
+                        ConexionApi cp=new ConexionApi();
+                        List<DataHTTP> listData= new ArrayList<DataHTTP>();
+                        listData.add(new DataHTTP("buscar_cliente",key,"post",""));
+                        String gsonCuerpo=new Gson().toJson(listData);
+                        int linea = Integer.parseInt( idlinea.getText().toString().trim());
+                        double monto = Double.parseDouble(Monto.getText().toString().trim());
+                        int periodo =Integer.parseInt(idfrecuencia.getText().toString().trim());
+                        int plazo = Integer.parseInt(Plazo.getText().toString().trim());
+                        int credito= 0;
+                        try {
+                            String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Creditos/CuotaPrimaria?id_linea="+linea+"&monto="+monto+"&id_periodo="+periodo+"&plazo="+plazo+"&id_credito="+credito,"Operacion",gsonCuerpo).get();
+                            Calculo_Credito calculo_credito =new Gson().fromJson(respuestaLogin,Calculo_Credito.class);
+                            Integer size = calculo_credito.amortizacion.size();
+                            Ncuotas.setText(String.valueOf(size));
+                            Cuotas.setText(String.valueOf("$ "+ calculo_credito.getCuotaTotal()));
+                            float totalpago =  size * calculo_credito.getCuotaTotal();
+                            TotalaPagar.setText(String.valueOf("$ "+ totalpago));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         });
-
-
-
         return v;
     }
     //metodo para llenar el spinner de linea de credito y obtener su id
@@ -122,7 +131,7 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
                     p.add(linea.getId_Linea()+ " - " + linea.getDescripcion_linea());
                 }
                 final Object[] id =  p.toArray();
-                ArrayAdapter<String> h = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,p);
+                ArrayAdapter<String> h = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,p);
                 descripcionLinea.setAdapter(h);
 
                 descripcionLinea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -168,7 +177,7 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
 
                 }
                final Object[] id =  p.toArray();
-                ArrayAdapter<String> h = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,p);
+                ArrayAdapter<String> h = new ArrayAdapter<String>(getContext(),R.layout.spinner_item,p);
                 frecuencia.setAdapter(h);
 
                 frecuencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

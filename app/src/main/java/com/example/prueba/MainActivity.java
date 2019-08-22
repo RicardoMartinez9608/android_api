@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.setItemIconTintList(null);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
        // boolean FragmentSeleccionado = false;
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            transaction.replace(R.id.content_main,new RedFragment()).commit();
         } else if (id == R.id.nav_gallery) {
             transaction.replace(R.id.content_main,new RedFragment()).commit();
          //   miFragment = new RedFragment();

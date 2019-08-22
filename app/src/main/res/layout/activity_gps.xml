@@ -59,7 +59,8 @@
                     android:id="@+id/dui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="DUI" />
+                    android:text="DUI"
+                    android:visibility="invisible"/>
 
                 <TextView
                     android:id="@+id/txtTipoUbicacion"

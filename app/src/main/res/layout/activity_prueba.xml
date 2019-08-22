@@ -1,67 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
    >
-
-    <LinearLayout
-        android:id="@+id/principal"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:backgroundTint="#00FFFFFF"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
+        android:layout_height="380dp">
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="50dp"
-            android:src="@drawable/logo" />
-
-
-        <EditText
-            android:id="@+id/usuario"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:background="@drawable/principal"/>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@android:color/holo_blue_dark"
-            android:drawableLeft="@drawable/ic_action_user"
-            android:ems="10"
-            android:hint="Usuario"
-            android:inputType="textPersonName"
-            android:padding="10px"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+            android:orientation="horizontal"
+            android:layout_gravity="center|bottom"
+            android:background="#03A9F4">
+            <TextView
+                android:id="@+id/sin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Bienvenido a la Aplicación Móvil de AyC"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="16dp"/>
 
-        <EditText
-            android:id="@+id/contrasena"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@android:color/holo_blue_dark"
-            android:drawableLeft="@drawable/ic_action_pass"
-            android:ems="10"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:padding="10px"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white" />
+        </LinearLayout>
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/acceder"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
-            android:background="@drawable/borde_redondo"
-            android:text="Acceder"
-            android:textColor="@android:color/background_light" />
+    <EditText
+        android:id="@+id/usuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Usuario"
+        android:inputType="text"
+        android:textColor="#000"
+        android:background="#f0f0f4"
+        android:padding="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:drawableLeft="@drawable/ic_action_user"
+        android:drawablePadding="16dp"
+        />
+    <EditText
+        android:id="@+id/contrasena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:background="#f0f0f4"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="12dp"
+        android:drawablePadding="16dp"
+        android:drawableLeft="@drawable/ic_action_pass"
+        />
+
+    <Button
+        android:id="@+id/acceder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnformate"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:textAlignment="center"
+        android:padding="14dp"
+        android:gravity="center"
+        android:text="ACCEDER"
+        android:textSize="16dp"
+        android:textColor="#fff"
+        />
 
 
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
