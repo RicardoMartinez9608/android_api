@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,11 +25,15 @@ import com.example.prueba.Helper.Ubicacion_Persona;
 import com.google.gson.Gson;
 import org.apache.http.impl.client.BasicCookieStore;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class gps extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+    String[] strFrutas;
+    List<String> listaFrutas;
+    ArrayAdapter<String> comboAdapter;
     TextView tvMensaje;
     TextView LongitudAc;
     TextView LatitudAC;
@@ -66,6 +71,16 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         Atras = findViewById(R.id.Regresar);
         ubicaciones = findViewById(R.id.spinner);
         ubicaciones.setOnItemSelectedListener(this);
+
+        listaFrutas = new ArrayList<>();
+        //Arreglo con nombre de frutas
+        strFrutas = new String[] {"Domicilio", "Negocio", "Trabajo"};
+        //Agrego las frutas del arreglo `strFrutas` a la listaFrutas
+        Collections.addAll(listaFrutas, strFrutas);
+        //Implemento el adapter con el contexto, layout, listaFrutas
+        comboAdapter = new ArrayAdapter<>(this,R.layout.spinner_item, listaFrutas);
+        //Cargo el spinner con los datos
+        ubicaciones.setAdapter(comboAdapter);
         //Metodo para regresar al fragment de seleccion de cliente
         Atras.setOnClickListener(new View.OnClickListener() {
             @Override
