@@ -10,14 +10,19 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.Persona;
@@ -156,29 +161,39 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
     //metodos del Spinner
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        int indice = ubicaciones.getSelectedItemPosition();
-        ConexionApi cp=new ConexionApi();
-        List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        listData.add(new DataHTTP("buscar_cliente",key,"post",""));
-        String gsonCuerpo=new Gson().toJson(listData);
-        try {
-            String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+dui.getText().toString()   ,"Operacion",gsonCuerpo).get();
-            Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
-            if (indice == 0){
-                LatitudEn.setText("Latitud  "+persona.getLatitud_Domicilio());
-                LongitudEn.setText("Longitud " + persona.getLongitud_Domicilio());
-            }else if(indice == 1){
-                LatitudEn.setText("Latitud "+persona.getLatitud_Direccion_Negocio());
-                LongitudEn.setText("Longitud " + persona.getLongitud_Direccion_Negocio());
-            }else if(indice == 2){
-                LatitudEn.setText("Latitud  "+persona.getLatitud_Direccion_Trabajo());
-                LongitudEn.setText("Longitud " + persona.getLongitud_Direccion_Trabajo());
+        //validacion si existe conexion a internet
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            int indice = ubicaciones.getSelectedItemPosition();
+            ConexionApi cp=new ConexionApi();
+            List<DataHTTP> listData= new ArrayList<DataHTTP>();
+            listData.add(new DataHTTP("buscar_cliente",key,"post",""));
+            String gsonCuerpo=new Gson().toJson(listData);
+            try {
+                String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+dui.getText().toString()   ,"Operacion",gsonCuerpo).get();
+                Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
+                if (indice == 0){
+                    LatitudEn.setText("Latitud  "+persona.getLatitud_Domicilio());
+                    LongitudEn.setText("Longitud " + persona.getLongitud_Domicilio());
+                }else if(indice == 1){
+                    LatitudEn.setText("Latitud "+persona.getLatitud_Direccion_Negocio());
+                    LongitudEn.setText("Longitud " + persona.getLongitud_Direccion_Negocio());
+                }else if(indice == 2){
+                    LatitudEn.setText("Latitud  "+persona.getLatitud_Direccion_Trabajo());
+                    LongitudEn.setText("Longitud " + persona.getLongitud_Direccion_Trabajo());
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        }else {
+            Toast toast = Toast.makeText(this, "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
         }
+
     }
 
 
@@ -189,55 +204,69 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
     @Override
     public void onClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Quiere actualizar la Ubicacion de su cliente");
-        builder.setTitle("Satelite");
-        builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                int indice = ubicaciones.getSelectedItemPosition();
-                String tipo = "";
-                ConexionApi cp=new ConexionApi();
-                List<DataHTTP> listData= new ArrayList<DataHTTP>();
-                if (indice ==0){
-                    tipo = "Domicilio";
-                }else if (indice == 1){
-                    tipo = "Negocio";
-                }else if (indice==2){
-                    tipo = "Trabajo";
+        //validacion si existe conexion a internet
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Quiere actualizar la Ubicacion de su cliente");
+            builder.setTitle("Satelite");
+            builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    int indice = ubicaciones.getSelectedItemPosition();
+                    String tipo = "";
+                    ConexionApi cp=new ConexionApi();
+                    List<DataHTTP> listData= new ArrayList<DataHTTP>();
+                    if (indice ==0){
+                        tipo = "Domicilio";
+                    }else if (indice == 1){
+                        tipo = "Negocio";
+                    }else if (indice==2){
+                        tipo = "Trabajo";
+                    }
+
+                    String lat = LatitudAC.getText().toString();
+                    String longi = LongitudAc.getText().toString();
+                    Ubicacion_Persona ubicacion = new Ubicacion_Persona();
+                    ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
+                    ubicacion.setTipo_Ubicacion(tipo);
+                    ubicacion.setLat(lat);
+                    ubicacion.setLong(longi);
+                    Gson gson = new Gson();
+                    String JSON = gson.toJson(ubicacion);
+                    listData.add(new DataHTTP("coordenadas",key,"put",JSON));
+                    String gsonCuerpo=new Gson().toJson(listData);
+                    try {
+
+                        String respuestaLogin= cp.execute("http://190.86.177.177/pordefecto/api/Personas/Actualizar_Ubicacion_Persona","Operacion", gsonCuerpo).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "Ubicación actualizada correctamente", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+
+
                 }
+            });
 
-                String lat = LatitudAC.getText().toString();
-                String longi = LongitudAc.getText().toString();
-                Ubicacion_Persona ubicacion = new Ubicacion_Persona();
-                ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
-                ubicacion.setTipo_Ubicacion(tipo);
-                ubicacion.setLat(lat);
-                ubicacion.setLong(longi);
-                Gson gson = new Gson();
-                String JSON = gson.toJson(ubicacion);
-                listData.add(new DataHTTP("coordenadas",key,"put",JSON));
-                String gsonCuerpo=new Gson().toJson(listData);
-                try {
-
-                    String respuestaLogin= cp.execute("http://190.86.177.177/pordefecto/api/Personas/Actualizar_Ubicacion_Persona","Operacion", gsonCuerpo).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
                 }
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }else {
+            Toast toast = Toast.makeText(this, "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
 
     }
 

@@ -2,7 +2,10 @@ package com.example.prueba;
 
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -95,39 +98,49 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
     }
 
     public void onClick(View view) {
-        if (TextUtils.isEmpty(parametro.getText())){
-            Toast toast = Toast.makeText(getContext(), "Ingresa el DUI de tu Cliente", Toast.LENGTH_SHORT);
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if (TextUtils.isEmpty(parametro.getText())){
+                Toast toast = Toast.makeText(getContext(), "Ingresa el DUI de tu Cliente", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }else {
+                ConexionApi cp=new ConexionApi();
+                List<DataHTTP> listData= new ArrayList<DataHTTP>();
+                listData.add(new DataHTTP("buscar_cliente",key,"post",""));
+                String gsonCuerpo=new Gson().toJson(listData);
+                try {
+                    String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+parametro.getText().toString(),"Operacion",gsonCuerpo).get();
+                    if (respuestaLogin.length() == 38){
+                        Toast toast = Toast.makeText(getContext(), "DUI del cliente no almacenado en el sistema", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                        parametro.setText("");
+                    }else {
+                        Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
+                        nombre_completo.setText("Nombre del Cliente:   "+persona.getNombreCompleto());
+                        dui.setText("                              DUI:    "+persona.getDui());
+                        nit.setText("                              NIT:    "+persona.getNit());
+                        id_Persona=Math.round(persona.getId_Persona());
+                        nombre_c =  persona.getNombreCompleto();
+                        duiU = persona.getDui();
+                        Ubicacion.setVisibility(View.VISIBLE);
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else {
+            Toast toast = Toast.makeText(getContext(), "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
-        }else {
-            ConexionApi cp=new ConexionApi();
-            List<DataHTTP> listData= new ArrayList<DataHTTP>();
-            listData.add(new DataHTTP("buscar_cliente",key,"post",""));
-            String gsonCuerpo=new Gson().toJson(listData);
-            try {
-                String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+parametro.getText().toString(),"Operacion",gsonCuerpo).get();
-               if (respuestaLogin.length() == 38){
-                   Toast toast = Toast.makeText(getContext(), "DUI del cliente no almacenado en el sistema", Toast.LENGTH_SHORT);
-                   toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                   toast.show();
-                   parametro.setText("");
-               }else {
-                   Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
-                   nombre_completo.setText("Nombre del Cliente:   "+persona.getNombreCompleto());
-                   dui.setText("                              DUI:    "+persona.getDui());
-                   nit.setText("                              NIT:    "+persona.getNit());
-                   id_Persona=Math.round(persona.getId_Persona());
-                   nombre_c =  persona.getNombreCompleto();
-                   duiU = persona.getDui();
-                   Ubicacion.setVisibility(View.VISIBLE);
-               }
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
         }
+
 
 
 
