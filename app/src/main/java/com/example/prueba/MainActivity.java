@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        Fragment fragment = new Inicio();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commitAllowingStateLoss();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
     }
@@ -83,18 +86,22 @@ public class MainActivity extends AppCompatActivity
        // boolean FragmentSeleccionado = false;
 
         if (id == R.id.nav_home) {
-            transaction.replace(R.id.content_main,new RedFragment()).commit();
+            transaction.replace(R.id.content_main,new Inicio()).commitAllowingStateLoss();
+            transaction.addToBackStack(null);
         } else if (id == R.id.nav_gallery) {
-            transaction.replace(R.id.content_main,new RedFragment()).commit();
+            transaction.replace(R.id.content_main,new RedFragment()).commitAllowingStateLoss();
+            transaction.addToBackStack(null);
          //   miFragment = new RedFragment();
         //    FragmentSeleccionado = true;
         } else if (id == R.id.nav_slideshow) {
         //    miFragment = new GreenFragment();
         //    FragmentSeleccionado = true;
-            transaction.replace(R.id.content_main,new GreenFragment()).commit();
+            transaction.replace(R.id.content_main,new GreenFragment()).commitAllowingStateLoss();
+            transaction.addToBackStack(null);
 
         } else if (id == R.id.nav_tools) {
-            transaction.replace(R.id.content_main,new CalculoCredito()).commit();
+            transaction.replace(R.id.content_main,new CalculoCredito()).commitAllowingStateLoss();
+            transaction.addToBackStack(null);
         }
 
       //  if (FragmentSeleccionado == true){
