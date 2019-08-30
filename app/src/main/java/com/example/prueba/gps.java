@@ -270,7 +270,10 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
     }
 
-
+    @Override
+    public void onBackPressed(){
+        isFinishing();
+    }
 
 
 

@@ -120,9 +120,9 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                         parametro.setText("");
                     }else {
                         Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
-                        nombre_completo.setText("Nombre del Cliente:   "+persona.getNombreCompleto());
-                        dui.setText("                              DUI:    "+persona.getDui());
-                        nit.setText("                              NIT:    "+persona.getNit());
+                        nombre_completo.setText("Nombre del Cliente: "+persona.getNombreCompleto());
+                        dui.setText("                              DUI: "+persona.getDui());
+                        nit.setText("                              NIT: "+persona.getNit());
                         id_Persona=Math.round(persona.getId_Persona());
                         nombre_c =  persona.getNombreCompleto();
                         duiU = persona.getDui();

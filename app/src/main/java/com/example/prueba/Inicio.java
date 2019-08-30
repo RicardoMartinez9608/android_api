@@ -64,6 +64,8 @@ public class Inicio extends Fragment implements View.OnClickListener {
                 transaction.replace(R.id.content_main, nuevoFragmento);
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();
+
+
             }
         });
 
@@ -71,8 +73,12 @@ public class Inicio extends Fragment implements View.OnClickListener {
         return v;
     }
 
+
+
+
     @Override
     public void onClick(View v) {
 
     }
+
 }
