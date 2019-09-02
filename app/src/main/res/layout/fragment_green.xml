@@ -23,20 +23,39 @@
             android:text="Buscar cliente DUI"
             android:textColor="?android:attr/colorActivatedHighlight"
             android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/parametro"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:ems="10"
-            android:background="@drawable/borde_redondo_textbox"
-            android:textColor="@android:color/background_light"
-            android:hint="DUI"
-            android:textColorHint="@android:color/white"
-            android:inputType="phone"
-            android:paddingLeft="10dp"
-            android:layout_margin="15dp"
-            android:maxLength="10" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <EditText
+                android:id="@+id/parametro"
+                android:layout_width="300dp"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:background="@drawable/borde_redondo_textbox"
+                android:textColor="@android:color/background_light"
+                android:hint="DUI"
+                android:textColorHint="@android:color/white"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:layout_margin="15dp"
+                android:maxLength="10" />
+
+            <ImageButton
+                android:id="@+id/botonHablar"
+                style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FF7e00"
+                android:src="@mipmap/microfono"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+
+
 
         <Button
             android:id="@+id/buscar"
