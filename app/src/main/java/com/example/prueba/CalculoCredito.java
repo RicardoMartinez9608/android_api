@@ -2,6 +2,7 @@ package com.example.prueba;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -123,6 +124,8 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
         });
         return v;
     }
+
+
     //metodo para llenar el spinner de linea de credito y obtener su id
     public void LineaCredito(){
 

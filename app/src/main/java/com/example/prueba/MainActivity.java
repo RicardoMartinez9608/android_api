@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         Fragment fragment = new Inicio();
-        getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,fragment).commitAllowingStateLoss();
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);

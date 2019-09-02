@@ -2,6 +2,7 @@ package com.example.prueba;
 
 
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
+import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +31,10 @@ import com.google.gson.Gson;
 import org.apache.http.impl.client.BasicCookieStore;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -36,6 +42,8 @@ import java.util.concurrent.ExecutionException;
  */
 @TargetApi(Build.VERSION_CODES.N)
 public class GreenFragment extends Fragment implements View.OnClickListener{
+    private static final int REQ_CODE_SPEECH_INPUT = 100;
+    private ImageButton mBotonHablar;
     private EditText parametro;
     private Button buscar;
     private Button Ubicacion;
@@ -64,7 +72,8 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         nombre_completo=(TextView)v.findViewById(R.id.nombre_completo);
         dui=(TextView) v.findViewById(R.id.dui);
         nit=(TextView) v.findViewById(R.id.nit);
-        parametro.setText("00603574-7");
+        mBotonHablar = v.findViewById(R.id.botonHablar);
+        parametro.setText("03548906-9");
 
 
         buscar.setOnClickListener((View.OnClickListener) this);
@@ -93,7 +102,52 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 7000);
             }
         });
+
+        mBotonHablar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iniciarEntradaVoz();
+            }
+        });
         return v;
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+                    String print = "";
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    final Object[] voz = result.toArray();
+                    String valor = voz[0].toString();
+                    String h = valor.replace(" ", "");
+                    if (h.matches("[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9]")) {
+                        print = result.get(0);
+                        parametro.setText(print.replace(" ", ""));
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), "Dui Incorrecto", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void iniciarEntradaVoz() {   Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Dicta el número de DUI");
+        try {
+            startActivityForResult(intent,REQ_CODE_SPEECH_INPUT);
+        }catch (ActivityNotFoundException e){
+
+        }
 
     }
 
