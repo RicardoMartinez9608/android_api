@@ -50,18 +50,42 @@
             android:layout_height="wrap_content"
             android:text="DUI"
             android:visibility="invisible"/>
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                tools:context=".MapsActivity" />
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MapsActivity" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/Regresar"
+                android:name= "de.androidbuch.activiti.task.TaskDetailsFragment"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="?android:attr/colorActivatedHighlight"
+                android:text="Regresar"
+                android:textColor="@android:color/background_light"
+                android:onClick="onClick"/>
+
+            <Button
+                android:id="@+id/Ubicacion"
+                android:name= "de.androidbuch.activiti.task.TaskDetailsFragment"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="?android:attr/colorActivatedHighlight"
+                android:text="Actualizar ubicaciones"
+                android:textColor="@android:color/background_light"
+                android:onClick="onClick"/>
+        </LinearLayout>
     </LinearLayout>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
