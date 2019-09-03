@@ -46,8 +46,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
     private ImageButton mBotonHablar;
     private EditText parametro;
     private Button buscar;
-    private Button Ubicacion;
-    private Button verUbicaciones;
+    private Button Ubicacion,verUbicacion;
     private TextView nombre_completo;
     private TextView dui;
     public String nombre_c;
@@ -104,15 +103,18 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        verUbicaciones = v.findViewById(R.id.verUbicacion);
-
-        verUbicaciones.setOnClickListener(new View.OnClickListener() {
+        verUbicacion = v.findViewById(R.id.verUbicacion);
+        verUbicacion.setVisibility(View.INVISIBLE);
+        verUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtra("Id_usuario",String.valueOf(id_Persona));
+                intent.putExtra("nombreC", String.valueOf(nombre_c));
+                intent.putExtra("DUI", String.valueOf(duiU));
+                startActivity(intent);
             }
         });
-
 
         mBotonHablar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +194,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                         nombre_c =  persona.getNombreCompleto();
                         duiU = persona.getDui();
                         Ubicacion.setVisibility(View.VISIBLE);
+                        verUbicacion.setVisibility(View.VISIBLE);
                     }
 
                 } catch (InterruptedException e) {

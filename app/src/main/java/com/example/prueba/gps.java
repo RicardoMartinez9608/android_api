@@ -44,7 +44,7 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
     TextView LatitudAC;
     TextView ID;
     String dato ;
-   public Bundle id;
+    Bundle id;
     Bundle nombreCompleto;
     Bundle DUI;
     TextView nombre;
@@ -90,13 +90,13 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         Atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_main);
-                if(getSupportFragmentManager().getBackStackEntryCount() > 0){
-                    getSupportFragmentManager().popBackStackImmediate();
-                }else{
+              //  Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_main);
+               // if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+               //     getSupportFragmentManager().popBackStackImmediate();
+                //}else{
                     finish();
 
-                }
+               // }
             }
         });
         //ID de usuario

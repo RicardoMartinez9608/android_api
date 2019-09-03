@@ -30,7 +30,11 @@ this.lati = lati;
         String t2 = String.valueOf(location.getLongitude());
         lati.setText(t1);
         lon.setText(t2);
+        Double latp = 28.4187500;
+        Double lonp = -81.5812300;
+
         mapa(location.getLatitude(), location.getLongitude());
+
     }
 
     public void mapa(double lat, double lon) {
