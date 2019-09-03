@@ -3,6 +3,8 @@ package com.example.prueba;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.prueba.Helper.ConexionApi;
@@ -29,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView nombre;
     TextView dui;
     TextView ID;
+    Button regresar;
     private String key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ID.setText(IDobtenido);
         nombre.setText("Nombre del Cliente: " +nombreObtenido);
         dui.setText(duiObtenido);
+        regresar = findViewById(R.id.Regresar);
+
+        regresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -98,21 +109,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LongitudDomicilio =Double.parseDouble( persona.getLongitud_Domicilio());
 
             final LatLng punto1 = new LatLng(LatitudDomicilio,LongitudDomicilio);
-            mMap.addMarker(new MarkerOptions().position(punto1).title("Domicilio"));
+            mMap.addMarker(new MarkerOptions().position(punto1).title("Ubicación del Domicilio"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(punto1));
             //carga de valores extraidos de la api para ubicacion del Negocio
             LatitudNegocio = Double.parseDouble(persona.getLatitud_Direccion_Negocio());
             Longitudnegocio = Double.parseDouble(persona.getLongitud_Direccion_Negocio());
 
             final LatLng punto2 = new LatLng(LatitudNegocio,Longitudnegocio);
-            mMap.addMarker(new MarkerOptions().position(punto2).title("Negocio"));
+            mMap.addMarker(new MarkerOptions().position(punto2).title("Ubicación del Negocio"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(punto2));
             //carga de valores extraidos de la api para ubicacion del Trabajo
             LatitudTrabajo = Double.parseDouble(persona.getLatitud_Direccion_Trabajo());
             LongitudTrabajo = Double.parseDouble(persona.getLongitud_Direccion_Trabajo());
 
             final LatLng punto3 = new LatLng(LatitudTrabajo,LongitudTrabajo);
-            mMap.addMarker(new MarkerOptions().position(punto3).title("Trabajo"));
+            mMap.addMarker(new MarkerOptions().position(punto3).title("Ubicación del Trabajo"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(punto3));
 
         } catch (InterruptedException e) {

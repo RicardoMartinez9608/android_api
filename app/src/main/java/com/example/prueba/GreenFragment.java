@@ -113,6 +113,8 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("nombreC", String.valueOf(nombre_c));
                 intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
+                //Deshabilitar control durante 7 segundos
+                verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 7000);
             }
         });
 
