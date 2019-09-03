@@ -47,6 +47,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
     private EditText parametro;
     private Button buscar;
     private Button Ubicacion;
+    private Button verUbicaciones;
     private TextView nombre_completo;
     private TextView dui;
     public String nombre_c;
@@ -102,6 +103,16 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 7000);
             }
         });
+
+        verUbicaciones = v.findViewById(R.id.verUbicacion);
+
+        verUbicaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         mBotonHablar.setOnClickListener(new View.OnClickListener() {
             @Override

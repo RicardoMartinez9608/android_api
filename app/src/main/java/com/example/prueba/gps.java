@@ -146,6 +146,7 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
         tvMensaje.setText("Localizacion Actual");
 
+
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]grantResults) {
@@ -156,7 +157,6 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             }
         }
     }
-
 
     //metodos del Spinner
     @Override
@@ -193,6 +193,8 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
         }
+
+
 
     }
 
