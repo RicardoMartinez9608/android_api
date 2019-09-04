@@ -99,11 +99,13 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
                 //Deshabilitar control durante 7 segundos
-                Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 7000);
+                Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 1000);
+                verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 1000);
+
             }
         });
 
-        verUbicacion = v.findViewById(R.id.verUbicacion);
+        verUbicacion = (Button) v.findViewById(R.id.verUbicacion);
         verUbicacion.setVisibility(View.INVISIBLE);
         verUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +116,8 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
                 //Deshabilitar control durante 7 segundos
-                verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 7000);
+                Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 1000);
+                verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 1000);
             }
         });
 

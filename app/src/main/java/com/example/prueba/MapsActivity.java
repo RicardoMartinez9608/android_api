@@ -3,9 +3,11 @@ package com.example.prueba;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
@@ -83,6 +85,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      //   LatLng sydney = new LatLng(13.9698857, -89.562644);
        // mMap.addMarker(new MarkerOptions().position(sydney).title("AyC"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         Ubicaciones(googleMap);
     }
 
@@ -104,27 +108,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+dui.getText().toString()   ,"Operacion",gsonCuerpo).get();
             Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
-            //carga de valores extraidos de la api para ubicacion del trabajo
-            LatitudDomicilio = Double.parseDouble( persona.getLatitud_Domicilio());
-            LongitudDomicilio =Double.parseDouble( persona.getLongitud_Domicilio());
+            if (persona.getLongitud_Direccion_Trabajo() == null && persona.getLongitud_Direccion_Negocio() ==null && persona.getLongitud_Domicilio()== null )
+            {
+                Toast toast = Toast.makeText(this, "No existe localización guardada para su cliente, porfavor actualize", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }else{
+                //carga de valores extraidos de la api para ubicacion del trabajo
 
-            final LatLng punto1 = new LatLng(LatitudDomicilio,LongitudDomicilio);
-            mMap.addMarker(new MarkerOptions().position(punto1).title("Ubicación del Domicilio"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(punto1));
-            //carga de valores extraidos de la api para ubicacion del Negocio
-            LatitudNegocio = Double.parseDouble(persona.getLatitud_Direccion_Negocio());
-            Longitudnegocio = Double.parseDouble(persona.getLongitud_Direccion_Negocio());
+                if (persona.getLatitud_Domicilio()== null && persona.getLongitud_Domicilio() == null){
+                    Toast toast = Toast.makeText(this, "Localizacion del Domicilio no Almacenada", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    LatitudDomicilio = Double.parseDouble( persona.getLatitud_Domicilio());
+                    LongitudDomicilio =Double.parseDouble( persona.getLongitud_Domicilio());
+                    final LatLng punto1 = new LatLng(LatitudDomicilio,LongitudDomicilio);
+                    mMap.addMarker(new MarkerOptions().position(punto1).title("Ubicación del Domicilio"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto1));
+                }
+                //carga de valores extraidos de la api para ubicacion del Negocio
 
-            final LatLng punto2 = new LatLng(LatitudNegocio,Longitudnegocio);
-            mMap.addMarker(new MarkerOptions().position(punto2).title("Ubicación del Negocio"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(punto2));
-            //carga de valores extraidos de la api para ubicacion del Trabajo
-            LatitudTrabajo = Double.parseDouble(persona.getLatitud_Direccion_Trabajo());
-            LongitudTrabajo = Double.parseDouble(persona.getLongitud_Direccion_Trabajo());
+                if (persona.getLatitud_Direccion_Negocio() == null && persona .getLongitud_Direccion_Negocio()== null) {
+                    Toast toast = Toast.makeText(this, "Localizacion del Negocio no Almacenada", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    LatitudNegocio = Double.parseDouble(persona.getLatitud_Direccion_Negocio());
+                    Longitudnegocio = Double.parseDouble(persona.getLongitud_Direccion_Negocio());
+                    final LatLng punto2 = new LatLng(LatitudNegocio,Longitudnegocio);
+                    mMap.addMarker(new MarkerOptions().position(punto2).title("Ubicación del Negocio"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto2));
+                }
+                //carga de valores extraidos de la api para ubicacion del Trabajo
 
-            final LatLng punto3 = new LatLng(LatitudTrabajo,LongitudTrabajo);
-            mMap.addMarker(new MarkerOptions().position(punto3).title("Ubicación del Trabajo"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(punto3));
+                if (persona.getLatitud_Direccion_Trabajo() ==null && persona.getLongitud_Direccion_Trabajo()== null)
+                {
+                    Toast toast = Toast.makeText(this, "Localizacion del Trabajo no Almacenada", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    LatitudTrabajo = Double.parseDouble(persona.getLatitud_Direccion_Trabajo());
+                    LongitudTrabajo = Double.parseDouble(persona.getLongitud_Direccion_Trabajo());
+                    final LatLng punto3 = new LatLng(LatitudTrabajo,LongitudTrabajo);
+                    mMap.addMarker(new MarkerOptions().position(punto3).title("Ubicación del Trabajo"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto3));
+                }
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
