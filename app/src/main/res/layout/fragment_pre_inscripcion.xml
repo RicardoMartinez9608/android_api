@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PreInscripcion">
+
+    <LinearLayout
+        android:id="@+id/principal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Formato de Pre-Calificación de Clientes"
+                    android:textColor="?android:attr/colorActivatedHighlight"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/nombreCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/borde_redondo_textbox"
+                    android:textColor="@android:color/background_light"
+                    android:hint="Nombres Cliente"
+                    android:textColorHint="@android:color/white"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="15dp"
+                    android:imeOptions="actionDone"/>
+
+                <EditText
+                    android:id="@+id/apellidoCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/borde_redondo_textbox"
+                    android:textColor="@android:color/background_light"
+                    android:hint="Apellidos Cliente"
+                    android:textColorHint="@android:color/white"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="15dp"
+                    android:imeOptions="actionDone"/>
+
+                <EditText
+                    android:id="@+id/DUI"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:ems="10"
+                    android:background="@drawable/borde_redondo_textbox"
+                    android:textColor="@android:color/background_light"
+                    android:hint="DUI"
+                    android:textColorHint="@android:color/white"
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="15dp"
+                    android:maxLength="10"
+                    android:imeOptions="actionDone"/>
+
+                <EditText
+                    android:id="@+id/NIT"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:ems="17"
+                    android:background="@drawable/borde_redondo_textbox"
+                    android:textColor="@android:color/background_light"
+                    android:hint="NIT"
+                    android:textColorHint="@android:color/white"
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="15dp"
+                    android:maxLength="17"
+                    android:imeOptions="actionDone"/>
+
+                <Button
+                    android:id="@+id/siguiente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:background="@drawable/borde_redondo_botones"
+                    android:text="Siguiente"
+                    android:textColor="@android:color/background_light"
+                    android:layout_margin="15dp"
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>
