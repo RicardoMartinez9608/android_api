@@ -2,6 +2,7 @@ package com.example.prueba;
 
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +16,10 @@ import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -98,24 +101,24 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("nombreC", String.valueOf(nombre_c));
                 intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
-                //Deshabilitar control durante 7 segundos
+                //Deshabilitar control durante 1 segundos
                 Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 1000);
                 verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 1000);
 
             }
         });
-
         verUbicacion = (Button) v.findViewById(R.id.verUbicacion);
         verUbicacion.setVisibility(View.INVISIBLE);
         verUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                 intent.putExtra("Id_usuario",String.valueOf(id_Persona));
                 intent.putExtra("nombreC", String.valueOf(nombre_c));
                 intent.putExtra("DUI", String.valueOf(duiU));
                 startActivity(intent);
-                //Deshabilitar control durante 7 segundos
+                //Deshabilitar control durante 1 segundos
                 Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 1000);
                 verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 1000);
             }
@@ -127,8 +130,39 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                 iniciarEntradaVoz();
             }
         });
+
+        setupUI(v.findViewById(R.id.parent));
         return v;
 
+    }
+    //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
+    public static void hideSoftKeyboard(GreenFragment activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getContext().getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getActivity().getCurrentFocus().getWindowToken(), 0);
+    }
+    //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(GreenFragment.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
     }
 
     @Override
@@ -155,7 +189,6 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
             }
         }
     }
-
 
     private void iniciarEntradaVoz() {   Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);

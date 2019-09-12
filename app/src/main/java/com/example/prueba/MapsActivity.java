@@ -2,6 +2,8 @@ package com.example.prueba;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -33,7 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView nombre;
     TextView dui;
     TextView ID;
-    Button regresar;
+    Button regresar, Actualizar;
     private String key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        Actualizar = findViewById(R.id.ActualizarUbicacion);
+        Actualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Intent intent = new Intent(v.getContext(), gps.class);
+               // startActivity(intent);
             }
         });
 
@@ -126,6 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     final LatLng punto1 = new LatLng(LatitudDomicilio,LongitudDomicilio);
                     mMap.addMarker(new MarkerOptions().position(punto1).title("Ubicación del Domicilio"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(punto1));
+
                 }
                 //carga de valores extraidos de la api para ubicacion del Negocio
 

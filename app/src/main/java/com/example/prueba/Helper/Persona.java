@@ -9,8 +9,8 @@ import java.io.Serializable;
 public class Persona implements Serializable
 {
 
-    private float id_Persona;
-    private float id_Cartera;
+    private int id_Persona;
+    private int id_Cartera;
     private String cartera = null;
     private String codigo = null;
     private String nombres;
@@ -21,14 +21,14 @@ public class Persona implements Serializable
     private String dui;
     private String pasaporte = null;
     private boolean pone_Huella;
-    private float id_Departamento_Pais_Domicilio;
-    private float id_Municipio_Departamento_Domicilio;
+    private int id_Departamento_Pais_Domicilio;
+    private int id_Municipio_Departamento_Domicilio;
     private String domicilio;
     private String latitud_Domicilio ;
     private String longitud_Domicilio = null;
     private boolean es_Empleado;
-    private float id_Departamento_Pais_Direccion_Trabajo;
-    private float id_Municipio_Departamento_Direccion_Trabajo;
+    private int id_Departamento_Pais_Direccion_Trabajo;
+    private int id_Municipio_Departamento_Direccion_Trabajo;
     private String direccion_Trabajo = null;
     private String latitud_Direccion_Trabajo = null;
     private String longitud_Direccion_Trabajo = null;
@@ -36,22 +36,22 @@ public class Persona implements Serializable
     private String cargo_Trabajo = null;
     private String nombre_Jefe_Inmediato = null;
     private boolean es_Comerciante;
-    private float id_Departamento_Pais_Direccion_Negocio;
-    private float id_Municipio_Departamento_Direccion_Negocio;
+    private int id_Departamento_Pais_Direccion_Negocio;
+    private int id_Municipio_Departamento_Direccion_Negocio;
     private String direccion_Negocio;
     private String latitud_Direccion_Negocio = null;
     private String longitud_Direccion_Negocio = null;
     private String giro_Comercial;
     private float ingresos_Mensuales;
-    private float id_Departamento_Pais_Nacimiento;
-    private float id_Municipio_Departamento_Nacimiento;
+    private int id_Departamento_Pais_Nacimiento;
+    private int id_Municipio_Departamento_Nacimiento;
     private String fechaNacimiento;
     private String expedicionDocumentoIdentifcacion = null;
     private String expiracionDocumentoIdentificacion;
     private String isss = null;
     private String nup = null;
-    private float estadoFamiliar;
-    private float sexo;
+    private int estadoFamiliar;
+    private int sexo;
     private String ocupacion;
     private String profesion;
     private String nacionalidad;
@@ -59,16 +59,16 @@ public class Persona implements Serializable
     private String usuario = null;
     private String contrasena = null;
     private String correo = null;
-    private float personas_Cargo;
+    private int personas_Cargo;
     private boolean referencia_Crediticia_Comprobable;
-    private float residencia;
-    private float edad;
+    private int residencia;
+    private int edad;
     private boolean tiene_Cargo;
     private boolean familiar_Cargo;
     private boolean asociado_Cargo;
     private String comentario;
-    private float ponderacion;
-    private float estado_Socio;
+    private int ponderacion;
+    private int estado_Socio;
     private String persona_Tipo_Persona = null;
     private String persona_Relaciones = null;
     private String persona_Referencias = null;
@@ -84,11 +84,11 @@ public class Persona implements Serializable
 
     // Getter Methods
 
-    public float getId_Persona() {
+    public int getId_Persona() {
         return id_Persona;
     }
 
-    public float getId_Cartera() {
+    public int getId_Cartera() {
         return id_Cartera;
     }
 
@@ -132,11 +132,11 @@ public class Persona implements Serializable
         return pone_Huella;
     }
 
-    public float getId_Departamento_Pais_Domicilio() {
+    public int getId_Departamento_Pais_Domicilio() {
         return id_Departamento_Pais_Domicilio;
     }
 
-    public float getId_Municipio_Departamento_Domicilio() {
+    public int getId_Municipio_Departamento_Domicilio() {
         return id_Municipio_Departamento_Domicilio;
     }
 
@@ -156,11 +156,11 @@ public class Persona implements Serializable
         return es_Empleado;
     }
 
-    public float getId_Departamento_Pais_Direccion_Trabajo() {
+    public int getId_Departamento_Pais_Direccion_Trabajo() {
         return id_Departamento_Pais_Direccion_Trabajo;
     }
 
-    public float getId_Municipio_Departamento_Direccion_Trabajo() {
+    public int getId_Municipio_Departamento_Direccion_Trabajo() {
         return id_Municipio_Departamento_Direccion_Trabajo;
     }
 
@@ -192,11 +192,11 @@ public class Persona implements Serializable
         return es_Comerciante;
     }
 
-    public float getId_Departamento_Pais_Direccion_Negocio() {
+    public int getId_Departamento_Pais_Direccion_Negocio() {
         return id_Departamento_Pais_Direccion_Negocio;
     }
 
-    public float getId_Municipio_Departamento_Direccion_Negocio() {
+    public int getId_Municipio_Departamento_Direccion_Negocio() {
         return id_Municipio_Departamento_Direccion_Negocio;
     }
 
@@ -220,11 +220,11 @@ public class Persona implements Serializable
         return ingresos_Mensuales;
     }
 
-    public float getId_Departamento_Pais_Nacimiento() {
+    public int getId_Departamento_Pais_Nacimiento() {
         return id_Departamento_Pais_Nacimiento;
     }
 
-    public float getId_Municipio_Departamento_Nacimiento() {
+    public int getId_Municipio_Departamento_Nacimiento() {
         return id_Municipio_Departamento_Nacimiento;
     }
 
@@ -249,11 +249,11 @@ public class Persona implements Serializable
         return nup;
     }
 
-    public float getEstadoFamiliar() {
+    public int getEstadoFamiliar() {
         return estadoFamiliar;
     }
 
-    public float getSexo() {
+    public int getSexo() {
         return sexo;
     }
 
@@ -285,7 +285,7 @@ public class Persona implements Serializable
         return correo;
     }
 
-    public float getPersonas_Cargo() {
+    public int getPersonas_Cargo() {
         return personas_Cargo;
     }
 
@@ -293,11 +293,11 @@ public class Persona implements Serializable
         return referencia_Crediticia_Comprobable;
     }
 
-    public float getResidencia() {
+    public int getResidencia() {
         return residencia;
     }
 
-    public float getEdad() {
+    public int getEdad() {
         return edad;
     }
 
@@ -317,11 +317,11 @@ public class Persona implements Serializable
         return comentario;
     }
 
-    public float getPonderacion() {
+    public int getPonderacion() {
         return ponderacion;
     }
 
-    public float getEstado_Socio() {
+    public int getEstado_Socio() {
         return estado_Socio;
     }
 
@@ -371,11 +371,11 @@ public class Persona implements Serializable
 
     // Setter Methods
 
-    public void setId_Persona(float id_Persona) {
+    public void setId_Persona(int id_Persona) {
         this.id_Persona = id_Persona;
     }
 
-    public void setId_Cartera(float id_Cartera) {
+    public void setId_Cartera(int id_Cartera) {
         this.id_Cartera = id_Cartera;
     }
 
@@ -419,11 +419,11 @@ public class Persona implements Serializable
         this.pone_Huella = pone_Huella;
     }
 
-    public void setId_Departamento_Pais_Domicilio(float id_Departamento_Pais_Domicilio) {
+    public void setId_Departamento_Pais_Domicilio(int id_Departamento_Pais_Domicilio) {
         this.id_Departamento_Pais_Domicilio = id_Departamento_Pais_Domicilio;
     }
 
-    public void setId_Municipio_Departamento_Domicilio(float id_Municipio_Departamento_Domicilio) {
+    public void setId_Municipio_Departamento_Domicilio(int id_Municipio_Departamento_Domicilio) {
         this.id_Municipio_Departamento_Domicilio = id_Municipio_Departamento_Domicilio;
     }
 
@@ -443,11 +443,11 @@ public class Persona implements Serializable
         this.es_Empleado = es_Empleado;
     }
 
-    public void setId_Departamento_Pais_Direccion_Trabajo(float id_Departamento_Pais_Direccion_Trabajo) {
+    public void setId_Departamento_Pais_Direccion_Trabajo(int id_Departamento_Pais_Direccion_Trabajo) {
         this.id_Departamento_Pais_Direccion_Trabajo = id_Departamento_Pais_Direccion_Trabajo;
     }
 
-    public void setId_Municipio_Departamento_Direccion_Trabajo(float id_Municipio_Departamento_Direccion_Trabajo) {
+    public void setId_Municipio_Departamento_Direccion_Trabajo(int id_Municipio_Departamento_Direccion_Trabajo) {
         this.id_Municipio_Departamento_Direccion_Trabajo = id_Municipio_Departamento_Direccion_Trabajo;
     }
 
@@ -479,11 +479,11 @@ public class Persona implements Serializable
         this.es_Comerciante = es_Comerciante;
     }
 
-    public void setId_Departamento_Pais_Direccion_Negocio(float id_Departamento_Pais_Direccion_Negocio) {
+    public void setId_Departamento_Pais_Direccion_Negocio(int id_Departamento_Pais_Direccion_Negocio) {
         this.id_Departamento_Pais_Direccion_Negocio = id_Departamento_Pais_Direccion_Negocio;
     }
 
-    public void setId_Municipio_Departamento_Direccion_Negocio(float id_Municipio_Departamento_Direccion_Negocio) {
+    public void setId_Municipio_Departamento_Direccion_Negocio(int id_Municipio_Departamento_Direccion_Negocio) {
         this.id_Municipio_Departamento_Direccion_Negocio = id_Municipio_Departamento_Direccion_Negocio;
     }
 
@@ -507,11 +507,11 @@ public class Persona implements Serializable
         this.ingresos_Mensuales = ingresos_Mensuales;
     }
 
-    public void setId_Departamento_Pais_Nacimiento(float id_Departamento_Pais_Nacimiento) {
+    public void setId_Departamento_Pais_Nacimiento(int id_Departamento_Pais_Nacimiento) {
         this.id_Departamento_Pais_Nacimiento = id_Departamento_Pais_Nacimiento;
     }
 
-    public void setId_Municipio_Departamento_Nacimiento(float id_Municipio_Departamento_Nacimiento) {
+    public void setId_Municipio_Departamento_Nacimiento(int id_Municipio_Departamento_Nacimiento) {
         this.id_Municipio_Departamento_Nacimiento = id_Municipio_Departamento_Nacimiento;
     }
 
@@ -535,11 +535,11 @@ public class Persona implements Serializable
         this.nup = nup;
     }
 
-    public void setEstadoFamiliar(float estadoFamiliar) {
+    public void setEstadoFamiliar(int estadoFamiliar) {
         this.estadoFamiliar = estadoFamiliar;
     }
 
-    public void setSexo(float sexo) {
+    public void setSexo(int sexo) {
         this.sexo = sexo;
     }
 
@@ -571,7 +571,7 @@ public class Persona implements Serializable
         this.correo = correo;
     }
 
-    public void setPersonas_Cargo(float personas_Cargo) {
+    public void setPersonas_Cargo(int personas_Cargo) {
         this.personas_Cargo = personas_Cargo;
     }
 
@@ -579,11 +579,11 @@ public class Persona implements Serializable
         this.referencia_Crediticia_Comprobable = referencia_Crediticia_Comprobable;
     }
 
-    public void setResidencia(float residencia) {
+    public void setResidencia(int residencia) {
         this.residencia = residencia;
     }
 
-    public void setEdad(float edad) {
+    public void setEdad(int edad) {
         this.edad = edad;
     }
 
@@ -603,11 +603,11 @@ public class Persona implements Serializable
         this.comentario = comentario;
     }
 
-    public void setPonderacion(float ponderacion) {
+    public void setPonderacion(int ponderacion) {
         this.ponderacion = ponderacion;
     }
 
-    public void setEstado_Socio(float estado_Socio) {
+    public void setEstado_Socio(int estado_Socio) {
         this.estado_Socio = estado_Socio;
     }
 

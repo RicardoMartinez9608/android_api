@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -102,6 +100,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_tools) {
             transaction.replace(R.id.content_main,new CalculoCredito()).commit();
+            transaction.addToBackStack(null);
+        }else if (id == R.id.preCalificación){
+            transaction.replace(R.id.content_main,new PreInscripcion()).commit();
             transaction.addToBackStack(null);
         }
 

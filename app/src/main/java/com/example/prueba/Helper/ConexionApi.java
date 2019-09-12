@@ -20,6 +20,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONObject;
+import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
 
@@ -193,8 +194,34 @@ public class ConexionApi extends AsyncTask<String, Void, String> {
                         request.setHeader("Authorization","Bearer "+token);
 
                         response=httpClient.execute(request);
+                        HttpEntity entity = response.getEntity();
+                        InputStream instream = entity.getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
+                        while( (strdata =reader.readLine())!=null)
+                            jsonString += strdata;
                     }
 
+                }else if(nombre.equals("persona")){
+                    HttpResponse response=null;
+                    String verbo=datos[i].getVerbo();
+                    if(verbo.equals("post"))
+                    {
+                        HttpClient httpClient= new DefaultHttpClient();
+                        HttpPost request=new HttpPost(url);
+                        request.setHeader("Accept", "application/json");
+                        request.setHeader("Content-type", "application/json");
+                        StringEntity stringEntity = new StringEntity(datos[i].getContenido());
+                        request.setEntity(stringEntity);
+                        String token=datos[i].getValor();
+                        request.setHeader("Authorization","Bearer "+token);
+
+                        response=httpClient.execute(request);
+                        HttpEntity entity = response.getEntity();
+                        InputStream instream = entity.getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
+                        while( (strdata =reader.readLine())!=null)
+                            jsonString += strdata;
+                    }
                 }else{
                     break;
                 }
