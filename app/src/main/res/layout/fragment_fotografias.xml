@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fotografias">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Toma de Fotografias"
+            android:textColor="?android:attr/colorActivatedHighlight"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/Frecuencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="left"
+            android:layout_marginTop="10dp"
+            android:text="Selecione el tipo de fotografia"
+            android:textColor="?android:attr/colorActivatedHighlight"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/tipofoto"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/borde_redondo_textbox"
+            android:popupBackground="#03A9F4">
+        </Spinner>
+        <ImageView
+            android:id="@+id/imagen"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_weight="9"
+            android:layout_margin="15dp"
+
+            />
+
+
+            <Button
+                android:id="@+id/tomarFoto"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tomar foto"
+                android:layout_gravity="center"
+                android:textColor="@android:color/background_light"
+                android:background="@drawable/borde_redondo_botones">
+            </Button>
+
+
+
+
+
+    </LinearLayout>
+
+</FrameLayout>
