@@ -20,6 +20,11 @@
             android:id="@+id/nav_tools"
             android:icon="@drawable/calculo"
             android:title="Calculo de Credito" />
+
+        <item
+            android:id="@+id/preCalificación"
+            android:icon="@drawable/clientes"
+            android:title="Pre-Calificación Clientes" />
     </group>
 
 
