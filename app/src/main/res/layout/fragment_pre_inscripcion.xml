@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".PreInscripcion">
 
     <LinearLayout
@@ -57,7 +58,7 @@
                     android:layout_margin="15dp"
                     android:imeOptions="actionDone"/>
 
-                <EditText
+                <com.santalu.maskedittext.MaskEditText
                     android:id="@+id/DUI"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -70,9 +71,10 @@
                     android:paddingLeft="10dp"
                     android:layout_margin="15dp"
                     android:maxLength="10"
-                    android:imeOptions="actionDone"/>
+                    android:imeOptions="actionDone"
+                    app:met_mask="########-#"/>
 
-                <EditText
+                <com.santalu.maskedittext.MaskEditText
                     android:id="@+id/NIT"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -85,7 +87,8 @@
                     android:paddingLeft="10dp"
                     android:layout_margin="15dp"
                     android:maxLength="17"
-                    android:imeOptions="actionDone"/>
+                    android:imeOptions="actionDone"
+                    app:met_mask="####-######-###-#"/>
 
                 <Button
                     android:id="@+id/siguiente"

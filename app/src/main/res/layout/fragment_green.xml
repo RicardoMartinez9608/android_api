@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-   android:id="@+id/parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GreenFragment">
@@ -30,7 +31,7 @@
             android:orientation="horizontal"
             >
 
-            <EditText
+            <com.santalu.maskedittext.MaskEditText
                 android:id="@+id/parametro"
                 android:layout_width="250dp"
                 android:layout_height="35dp"
@@ -43,7 +44,8 @@
                 android:paddingLeft="10dp"
                 android:layout_margin="15dp"
                 android:maxLength="10"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                app:met_mask="########-#"/>
 
             <ImageButton
                 android:id="@+id/botonHablar"

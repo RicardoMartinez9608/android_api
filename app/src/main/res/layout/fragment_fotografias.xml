@@ -20,6 +20,41 @@
             android:text="Toma de Fotografias"
             android:textColor="?android:attr/colorActivatedHighlight"
             android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="No. Correlativo:                       "/>
+            <TextView
+                android:id="@+id/id_cliente"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=""/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Nombre Cliente-preinscrito:"/>
+            <TextView
+                android:id="@+id/nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text=""/>
+
+        </LinearLayout>
+
+
 
 
         <TextView
@@ -52,16 +87,47 @@
             />
 
 
-            <Button
-                android:id="@+id/tomarFoto"
-                android:layout_width="200dp"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/tomarFoto"
+                    android:layout_width="150dp"
+                    android:layout_margin="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tomar foto"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/background_light"
+                    android:background="@drawable/borde_redondo_botones">
+                </Button>
+                <Button
+                    android:id="@+id/enviarFoto"
+                    android:layout_width="150dp"
+                    android:layout_margin="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Enviar foto"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/background_light"
+                    android:background="@drawable/borde_redondo_botones">
+                </Button>
+                <Button
+                android:id="@+id/siguiente"
+                android:layout_width="150dp"
+                android:layout_margin="15dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tomar foto"
+                android:text="siguiente"
                 android:layout_gravity="center"
                 android:textColor="@android:color/background_light"
                 android:background="@drawable/borde_redondo_botones">
             </Button>
+
+            </LinearLayout>
+
 
 
 
