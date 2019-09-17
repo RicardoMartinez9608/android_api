@@ -1,10 +1,14 @@
 package com.example.prueba;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,11 +34,12 @@ import java.util.concurrent.ExecutionException;
  * A simple {@link Fragment} subclass.
  */
 public class PreInscripcion extends Fragment {
- EditText nombres;
+ EditText nombres ;
  EditText apellidos;
  EditText dui;
  EditText nit;
  Button siguiente;
+ String id_obtenido;
  Integer tipop = 1;
  private String key;
     public PreInscripcion() {
@@ -64,43 +69,98 @@ public class PreInscripcion extends Fragment {
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConexionApi cp=new ConexionApi();
-                Persona persona = new Persona();
-                persona.setNombres(nombres.getText().toString());
-                persona.setApellidos(apellidos.getText().toString());
-                persona.setDui(dui.getText().toString());
-                persona.setNit(nit.getText().toString());
-                persona.setId_Cartera(20);
-                String gsonPersona=new Gson().toJson(persona);
-                List<DataHTTP> listData= new ArrayList<DataHTTP>();
-                listData.add(new DataHTTP("persona",key,"post",gsonPersona));
-                String gsonCuerpo=new Gson().toJson(listData);
+                preinscripcion();
+                Fragment nuevoFragmento = new fotografias();
+                Bundle args = new Bundle();
+                args.putString("id", id_obtenido);
+                args.putString("dui", dui.getText().toString());
+                args.putString("nombre",nombres.getText().toString());
+                args.putString("apellido",apellidos.getText().toString());
+                nuevoFragmento.setArguments(args);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_main, nuevoFragmento);
+                transaction.addToBackStack(null);
+                transaction.commitAllowingStateLoss();
+                limpiarEditText();
 
-                try {
-                    String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/CrearPersona?tipo_persona="+tipop,"Operacion",gsonCuerpo).get();
-                    if (respuestaLogin.length() == 45){
-                        Toast toast = Toast.makeText(getContext(), "El Dui ya esta almacenado en sistema", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                        limpiarEditText();
-                    }else{
-                        Toast toast = Toast.makeText(getContext(), "Cliente pre-calificado exitosamente", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                        limpiarEditText();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
 
 
         return v;
+    }
+
+    public void preinscripcion(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if(nombres.getText().toString().isEmpty()){
+                Toast toast = Toast.makeText(getContext(), "Ingrese el nombre del Cliente", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }else{
+                if (apellidos.getText().toString().isEmpty()){
+                    Toast toast = Toast.makeText(getContext(), "Ingrese el apellido del Cliente", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    if (dui.getText().toString().isEmpty()){
+                        Toast toast = Toast.makeText(getContext(), "Ingrese el dui del Cliente", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+                    }else{
+                        if (nit.getText().toString().isEmpty()){
+                            Toast toast = Toast.makeText(getContext(), "Ingrese el nit del cliente", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                        }else{
+                            ConexionApi cp=new ConexionApi();
+                            Persona persona = new Persona();
+                            persona.setNombres(nombres.getText().toString());
+                            persona.setApellidos(apellidos.getText().toString());
+                            persona.setDui(dui.getText().toString());
+                            persona.setNit(nit.getText().toString());
+                            persona.setId_Cartera(20);
+                            String gsonPersona=new Gson().toJson(persona);
+                            List<DataHTTP> listData= new ArrayList<DataHTTP>();
+                            listData.add(new DataHTTP("persona",key,"post",gsonPersona));
+                            String gsonCuerpo=new Gson().toJson(listData);
+
+                            try {
+                                String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/CrearPersona?tipo_persona="+tipop,"Operacion",gsonCuerpo).get();
+                                if (respuestaLogin.length() == 45){
+                                    Toast toast = Toast.makeText(getContext(), "El Dui ya esta almacenado en sistema", Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                    toast.show();
+                                    limpiarEditText();
+                                }else{
+                                    id_obtenido = respuestaLogin;
+                                    Toast toast = Toast.makeText(getContext(), "Cliente pre-calificado exitosamente", Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                    toast.show();
+                                    //
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+        }else {
+            Toast toast = Toast.makeText(getContext(), "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }
+
+
     }
 
     private class ConexionAPI extends ConexionApi{

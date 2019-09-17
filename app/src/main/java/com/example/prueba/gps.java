@@ -100,7 +100,9 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             }
         });
         //ID de usuario
-        id = getIntent().getExtras();
+        id = getIntent(
+
+        ).getExtras();
         nombreCompleto = getIntent().getExtras();
         DUI = getIntent().getExtras();
 
@@ -145,8 +147,6 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, 0,local);
 
         tvMensaje.setText("Localizacion Actual");
-
-
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]grantResults) {
