@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".PreInscripcion">
 
@@ -31,33 +32,6 @@
                     android:text="Formato de Pre-Calificación de Clientes"
                     android:textColor="?android:attr/colorActivatedHighlight"
                     android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/nombreCliente"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@drawable/borde_redondo_textbox"
-                    android:textColor="@android:color/background_light"
-                    android:hint="Nombres Cliente"
-                    android:textColorHint="@android:color/white"
-                    android:inputType="textPersonName"
-                    android:paddingLeft="10dp"
-                    android:layout_margin="15dp"
-                    android:imeOptions="actionDone"/>
-
-                <EditText
-                    android:id="@+id/apellidoCliente"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@drawable/borde_redondo_textbox"
-                    android:textColor="@android:color/background_light"
-                    android:hint="Apellidos Cliente"
-                    android:textColorHint="@android:color/white"
-                    android:inputType="text"
-                    android:paddingLeft="10dp"
-                    android:layout_margin="15dp"
-                    android:imeOptions="actionDone"/>
-
                 <com.santalu.maskedittext.MaskEditText
                     android:id="@+id/DUI"
                     android:layout_width="match_parent"
@@ -89,6 +63,36 @@
                     android:maxLength="17"
                     android:imeOptions="actionDone"
                     app:met_mask="####-######-###-#"/>
+
+                <EditText
+                    android:id="@+id/nombreCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/borde_redondo_textbox"
+                    android:textColor="@android:color/background_light"
+                    android:hint="Nombres Cliente"
+                    android:textColorHint="@android:color/white"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="15dp"
+                    android:imeOptions="actionDone"
+                    android:digits="abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ áéíóú"/>
+
+                <EditText
+                    android:id="@+id/apellidoCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/borde_redondo_textbox"
+                    android:textColor="@android:color/background_light"
+                    android:hint="Apellidos Cliente"
+                    android:textColorHint="@android:color/white"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="15dp"
+                    android:imeOptions="actionDone"
+                    android:digits="abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ áéíóú"/>
+
+
 
                 <Button
                     android:id="@+id/siguiente"

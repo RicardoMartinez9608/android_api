@@ -114,34 +114,55 @@
             android:textColor="@android:color/black"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="361dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/Ubicacion"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="15dp"
                 android:layout_marginTop="20px"
                 android:background="@drawable/borde_redondo_botones"
                 android:onClick="onClick"
                 android:text="Ubicar"
                 android:textColor="@android:color/background_light"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/verUbicacion"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="15dp"
                 android:layout_marginTop="20px"
                 android:background="@drawable/borde_redondo_botones"
                 android:onClick="onClick"
-                android:text="Ver Ubicaciones"
+                android:text="Ubicaciones"
                 android:textColor="@android:color/background_light"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
 
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="95dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Documentos"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@drawable/borde_redondo_botones"
+                android:onClick="onClick"
+                android:text="Documentos"
+                android:textColor="@android:color/background_light"
+                android:visibility="invisible" />
         </LinearLayout>
 
     </LinearLayout>
