@@ -1,17 +1,25 @@
 package com.example.prueba;
 
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.GpsStatus;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -46,10 +54,11 @@ import static android.app.Activity.RESULT_OK;
 @TargetApi(Build.VERSION_CODES.N)
 public class GreenFragment extends Fragment implements View.OnClickListener{
     private static final int REQ_CODE_SPEECH_INPUT = 100;
+    private static final int WRITE_PERMISSION = 0x01;
     private ImageButton mBotonHablar;
     private EditText parametro;
     private Button buscar;
-    private Button Ubicacion,verUbicacion;
+    private Button Ubicacion,verUbicacion,documentos;
     private TextView nombre_completo;
     private TextView dui;
     public String nombre_c;
@@ -77,7 +86,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         nit=(TextView) v.findViewById(R.id.nit);
         mBotonHablar = v.findViewById(R.id.botonHablar);
         parametro.setText("03548906-9");
-
+        checkIfLocationOpened();
 
         buscar.setOnClickListener((View.OnClickListener) this);
         try {
@@ -93,17 +102,30 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         {
             @Override
             public void onClick(View view) {
-               //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                //transaction.replace(R.id.content_main,new UbicacionGPS()).commit();
+                if (checkIfLocationOpened()== false){
+                    Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else {
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        Intent intent = new Intent(getActivity(), gps.class);
+                        intent.putExtra("Id_usuario", String.valueOf(id_Persona));
+                        intent.putExtra("nombreC", String.valueOf(nombre_c));
+                        intent.putExtra("DUI", String.valueOf(duiU));
+                        startActivity(intent);
+                    } else {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            Toast.makeText(getActivity(), "Permiso necesario para visualizar la geolozalizacion", Toast.LENGTH_LONG).show();
+                        }
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, WRITE_PERMISSION);
+                    }
+                }
 
-                Intent intent = new Intent(getActivity(),gps.class);
-                intent.putExtra("Id_usuario",String.valueOf(id_Persona));
-                intent.putExtra("nombreC", String.valueOf(nombre_c));
-                intent.putExtra("DUI", String.valueOf(duiU));
-                startActivity(intent);
                 //Deshabilitar control durante 1 segundos
                 Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 1000);
                 verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 1000);
+                documentos.postDelayed(new Runnable() { public void run() { documentos.setVisibility(View.INVISIBLE); } }, 1000);
+
 
             }
         });
@@ -112,15 +134,28 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         verUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
-                intent.putExtra("Id_usuario",String.valueOf(id_Persona));
-                intent.putExtra("nombreC", String.valueOf(nombre_c));
-                intent.putExtra("DUI", String.valueOf(duiU));
-                startActivity(intent);
-                //Deshabilitar control durante 1 segundos
-                Ubicacion.postDelayed(new Runnable() { public void run() { Ubicacion.setVisibility(View.INVISIBLE); } }, 1000);
-                verUbicacion.postDelayed(new Runnable() { public void run() { verUbicacion.setVisibility(View.INVISIBLE); } }, 1000);
+                if (checkIfLocationOpened() == false) {
+                    Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    Intent intent = new Intent(getActivity(), MapsActivity.class);
+                    intent.putExtra("Id_usuario", String.valueOf(id_Persona));
+                    intent.putExtra("nombreC", String.valueOf(nombre_c));
+                    intent.putExtra("DUI", String.valueOf(duiU));
+                    startActivity(intent);
+                    //Deshabilitar control durante 1 segundos
+                    Ubicacion.postDelayed(new Runnable() {
+                        public void run() {
+                            Ubicacion.setVisibility(View.INVISIBLE);
+                        }
+                    }, 1000);
+                    verUbicacion.postDelayed(new Runnable() {
+                        public void run() {
+                            verUbicacion.setVisibility(View.INVISIBLE);
+                        }
+                    }, 1000);
+                }
             }
         });
 
@@ -131,17 +166,36 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+        documentos = v.findViewById(R.id.Documentos);
+        documentos.setVisibility(View.INVISIBLE);
+        documentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment nuevoFragmento = new fotografias();
+                Bundle args = new Bundle();
+                args.putString("id", String.valueOf(id_Persona));
+                args.putString("dui", String.valueOf(duiU));
+                args.putString("nombre",nombre_c);
+                args.putString("apellido","");
+                nuevoFragmento.setArguments(args);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_main, nuevoFragmento);
+                transaction.addToBackStack(null);
+                transaction.commitAllowingStateLoss();
+            }
+        });
+        //llamado a metodo para ocultar teclado
         setupUI(v.findViewById(R.id.parent));
         return v;
 
     }
     //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
     public static void hideSoftKeyboard(GreenFragment activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getContext().getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getActivity().getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) activity.getContext().getSystemService(activity.getContext().INPUT_METHOD_SERVICE);
+        if (activity.getActivity().getCurrentFocus() != null)
+            imm.hideSoftInputFromWindow(activity.getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
     //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
     public void setupUI(View view) {
@@ -201,52 +255,68 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         }
 
     }
-
+    private boolean checkIfLocationOpened() {
+        String provider = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        System.out.println("Provider contains=> " + provider);
+        if (provider.contains("gps") || provider.contains("network")){
+            return true;
+        }
+        Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+        return false;
+    }
     public void onClick(View view) {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            if (TextUtils.isEmpty(parametro.getText())){
-                Toast toast = Toast.makeText(getContext(), "Ingresa el DUI de tu Cliente", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-            }else {
-                ConexionApi cp=new ConexionApi();
-                List<DataHTTP> listData= new ArrayList<DataHTTP>();
-                listData.add(new DataHTTP("buscar_cliente",key,"post",""));
-                String gsonCuerpo=new Gson().toJson(listData);
-                try {
-                    String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro="+parametro.getText().toString(),"Operacion",gsonCuerpo).get();
-                    if (respuestaLogin.length() == 38){
-                        Toast toast = Toast.makeText(getContext(), "DUI del cliente no almacenado en el sistema", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                        parametro.setText("");
-                    }else {
-                        Persona persona =new Gson().fromJson(respuestaLogin,Persona.class);
-                        nombre_completo.setText("Nombre del Cliente: "+persona.getNombreCompleto());
-                        dui.setText("                              DUI: "+persona.getDui());
-                        nit.setText("                              NIT: "+persona.getNit());
-                        id_Persona=Math.round(persona.getId_Persona());
-                        nombre_c =  persona.getNombreCompleto();
-                        duiU = persona.getDui();
-                        Ubicacion.setVisibility(View.VISIBLE);
-                        verUbicacion.setVisibility(View.VISIBLE);
-                    }
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }else {
-            Toast toast = Toast.makeText(getContext(), "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+        if (checkIfLocationOpened()== false){
+            Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
-        }
+        }else {
 
+            ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                if (TextUtils.isEmpty(parametro.getText())) {
+                    Toast toast = Toast.makeText(getContext(), "Ingresa el DUI de tu Cliente", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                } else {
+                    ConexionApi cp = new ConexionApi();
+                    List<DataHTTP> listData = new ArrayList<DataHTTP>();
+                    listData.add(new DataHTTP("buscar_cliente", key, "post", ""));
+                    String gsonCuerpo = new Gson().toJson(listData);
+                    try {
+                        String respuestaLogin = cp.execute("http://190.86.177.177/pordefecto/api/Personas/PersonaEspecifica?filtro=" + parametro.getText().toString(), "Operacion", gsonCuerpo).get();
+                        if (respuestaLogin.length() == 38) {
+                            Toast toast = Toast.makeText(getContext(), "DUI del cliente no almacenado en el sistema", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                            toast.show();
+                            parametro.setText("");
+                        } else {
+                            Persona persona = new Gson().fromJson(respuestaLogin, Persona.class);
+                            nombre_completo.setText("Nombre del Cliente: " + persona.getNombreCompleto());
+                            dui.setText("                              DUI: " + persona.getDui());
+                            nit.setText("                              NIT: " + persona.getNit());
+                            id_Persona = Math.round(persona.getId_Persona());
+                            nombre_c = persona.getNombreCompleto();
+                            duiU = persona.getDui();
+                            Ubicacion.setVisibility(View.VISIBLE);
+                            verUbicacion.setVisibility(View.VISIBLE);
+                            documentos.setVisibility(View.VISIBLE);
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                Toast toast = Toast.makeText(getContext(), "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
+        }
 
 
 

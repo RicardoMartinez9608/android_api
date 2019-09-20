@@ -12,12 +12,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.prueba.Helper.Cartera;
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.Persona;
@@ -41,6 +44,7 @@ public class PreInscripcion extends Fragment {
  Button siguiente;
  String id_obtenido;
  Integer tipop = 1;
+ Integer id_Cartera;
  private String key;
     public PreInscripcion() {
         // Required empty public constructor
@@ -66,30 +70,75 @@ public class PreInscripcion extends Fragment {
         siguiente = v.findViewById(R.id.siguiente);
         Intent intent = getActivity().getIntent();
         key = intent.getExtras().get("token").toString();
+        extraercartera();
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 preinscripcion();
-                Fragment nuevoFragmento = new fotografias();
-                Bundle args = new Bundle();
-                args.putString("id", id_obtenido);
-                args.putString("dui", dui.getText().toString());
-                args.putString("nombre",nombres.getText().toString());
-                args.putString("apellido",apellidos.getText().toString());
-                nuevoFragmento.setArguments(args);
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_main, nuevoFragmento);
-                transaction.addToBackStack(null);
-                transaction.commitAllowingStateLoss();
-                limpiarEditText();
 
             }
         });
 
-
-
+        //llamado a metodo para ocultar teclado
+        setupUI(v.findViewById(R.id.parent));
         return v;
     }
+    //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
+    public static void hideSoftKeyboard(PreInscripcion activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getContext().getSystemService(activity.getContext().INPUT_METHOD_SERVICE);
+        if (activity.getActivity().getCurrentFocus() != null)
+            imm.hideSoftInputFromWindow(activity.getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(PreInscripcion.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
+
+
+
+    public void extraercartera(){
+        ConexionApi cp=new ConexionApi();
+        List<DataHTTP> listData= new ArrayList<DataHTTP>();
+        listData.add(new DataHTTP("buscar_cliente",key,"get",""));
+        String gsonCuerpo=new Gson().toJson(listData);
+        try {
+            String respuestaLogin=cp.execute("http://190.86.177.177/pordefecto/api/Carteras/Cartera_Usuario_Autenticado","Operacion",gsonCuerpo).get();
+            if(respuestaLogin.length() >30){
+                Cartera cartera =new Gson().fromJson(respuestaLogin,Cartera.class);
+                id_Cartera = cartera.getId_Cartera();
+            }else{
+                Toast toast = Toast.makeText(getContext(), "No tiene cartera, comuniquese con su jefe inmediato", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+                siguiente.setEnabled(false);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void preinscripcion(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -121,7 +170,7 @@ public class PreInscripcion extends Fragment {
                             persona.setApellidos(apellidos.getText().toString());
                             persona.setDui(dui.getText().toString());
                             persona.setNit(nit.getText().toString());
-                            persona.setId_Cartera(20);
+                            persona.setId_Cartera(id_Cartera);
                             String gsonPersona=new Gson().toJson(persona);
                             List<DataHTTP> listData= new ArrayList<DataHTTP>();
                             listData.add(new DataHTTP("persona",key,"post",gsonPersona));
@@ -139,7 +188,7 @@ public class PreInscripcion extends Fragment {
                                     Toast toast = Toast.makeText(getContext(), "Cliente pre-calificado exitosamente", Toast.LENGTH_SHORT);
                                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     toast.show();
-                                    //
+
                                 }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
@@ -147,6 +196,19 @@ public class PreInscripcion extends Fragment {
                             } catch (ExecutionException e) {
                                 e.printStackTrace();
                             }
+
+                            Fragment nuevoFragmento = new fotografias();
+                            Bundle args = new Bundle();
+                            args.putString("id", id_obtenido);
+                            args.putString("dui", dui.getText().toString());
+                            args.putString("nombre",nombres.getText().toString());
+                            args.putString("apellido",apellidos.getText().toString());
+                            nuevoFragmento.setArguments(args);
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.content_main, nuevoFragmento);
+                            transaction.addToBackStack(null);
+                            transaction.commitAllowingStateLoss();
+                            limpiarEditText();
                         }
                     }
                 }

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prueba.Helper.Calculo_Credito;
 import com.example.prueba.Helper.ConexionApi;
 import com.example.prueba.Helper.DataHTTP;
 import com.example.prueba.Helper.LineasCredito;
@@ -47,6 +49,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,13 +105,7 @@ public class fotografias extends Fragment {
 
         id();
         requestWritePermission();
-        btnfoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                abrirCamara();
-            }
-        });
 
         btnenviar = v.findViewById(R.id.enviarFoto);
         ID = getArguments() != null ? getArguments().getString("id"): "";
@@ -119,26 +116,61 @@ public class fotografias extends Fragment {
         duicliente = duiobtenido;
         nombreCompleto = nombreObtenido +" "+ apellidoObtenido;
         nombre.setText(nombreCompleto);
+        btnfoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verificardocumento();
+                //  abrirCamara();
+            }
+        });
         btnenviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 enviar();
             }
         });
 
         btnsiguiente = v.findViewById(R.id.siguiente);
-        btnsiguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),gps.class);
-                intent.putExtra("Id_usuario",String.valueOf(ID));
-                intent.putExtra("nombreC", String.valueOf(nombreCompleto));
-                intent.putExtra("DUI", String.valueOf(duiobtenido));
-                startActivity(intent);
-            }
-        });
+
+            btnsiguiente.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btnsiguiente();
+
+                }
+            });
+
 
     return  v;
+    }
+
+    public void btnsiguiente(){
+        if (checkIfLocationOpened()== false){
+            Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }else{
+            Intent intent = new Intent(getActivity(), gps.class);
+            intent.putExtra("Id_usuario", String.valueOf(ID));
+            intent.putExtra("nombreC", String.valueOf(nombreCompleto));
+            intent.putExtra("DUI", String.valueOf(duiobtenido));
+            startActivity(intent);
+        }
+
+
+    }
+
+    private boolean checkIfLocationOpened() {
+        String provider = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        System.out.println("Provider contains=> " + provider);
+        if (provider.contains("gps") || provider.contains("network")){
+            return true;
+        }
+        Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+        return false;
     }
 
     @Override
@@ -235,7 +267,19 @@ public class fotografias extends Fragment {
                 });
 
                 bitm= BitmapFactory.decodeFile(path);
-                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitm,400,400,false));
+                final int maxSize = 400;
+                int outWidth;
+                int outHeight;
+                int inWidth = bitm.getWidth();
+                int inHeight = bitm.getHeight();
+                if(inWidth > inHeight){
+                    outWidth = maxSize;
+                    outHeight = (inHeight * maxSize) / inWidth;
+                } else {
+                    outHeight = maxSize;
+                    outWidth = (inWidth * maxSize) / inHeight;
+                }
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitm,outWidth,outHeight,false));
                 bit = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                 new AsyncTask<Void,Void,String>() {
 
@@ -245,6 +289,11 @@ public class fotografias extends Fragment {
                         bit.compress(Bitmap.CompressFormat.JPEG,100,base);
                         byte[] b = base.toByteArray();
                         String encodeImages = Base64.encodeToString(b,Base64.DEFAULT);
+                        try {
+                            base.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         return encodeImages;
                     }
                     @Override
@@ -258,6 +307,47 @@ public class fotografias extends Fragment {
 
 
     }
+    public void verificardocumento(){
+        ConexionApi cp=new ConexionApi();
+        int id_persona = Integer.parseInt((String) idcliente.getText());
+        int id_des_documento = Integer.parseInt( iddocumento);
+        List<DataHTTP> listData= new ArrayList<DataHTTP>();
+        listData.add(new DataHTTP("buscar_cliente",key,"get",""));
+        String gsonCuerpo=new Gson().toJson(listData);
+        try {
+            String respuesta_foto=cp.execute("http://190.86.177.177/pordefecto/api/Documentos/Verificar_Documento?id_descripcion_documento="+id_des_documento+"&id_persona="+id_persona,"Operacion",gsonCuerpo).get();
+
+            if (respuesta_foto.length() >13 ){
+                Toast toast = Toast.makeText(getContext(), "La Fotografia ya se encuentra guardada", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }else{
+                File fileImagen= new File(Environment.getExternalStorageDirectory(),RUTA_IMAGEN);
+                boolean isCreada = fileImagen.exists();
+                String nombreImagen= "";
+                if (isCreada == false){
+                    isCreada = fileImagen.mkdirs();
+                }
+
+                if (isCreada== true){
+
+                    nombreImagen= System.currentTimeMillis()/100 +".jpg";
+                }
+                path = Environment.getExternalStorageDirectory()+File.separator+RUTA_IMAGEN + File.separator+nombreImagen;
+
+                File imagen = new File(path);
+                Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID, imagen));
+                startActivityForResult(intent,REQUEST_IMAGE_CAPTURE);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void enviar(){
         ConexionApi cp=new ConexionApi();
@@ -270,7 +360,6 @@ public class fotografias extends Fragment {
         Persona persona = null;
         Boolean es_Imagen = true;
         Boolean es_PDF = false;
-
         enviarFoto  enviarFoto = new enviarFoto();
         enviarFoto.setId_Documento(id_documento);
         enviarFoto.setId_Persona(id_persona);

@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 public class gps extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     String[] strFrutas;
-    List<String> listaFrutas;
+  private   List<String> listaFrutas =new ArrayList<>();
     ArrayAdapter<String> comboAdapter;
     TextView tvMensaje;
     TextView LongitudAc;
@@ -77,7 +77,6 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         ubicaciones = findViewById(R.id.spinner);
         ubicaciones.setOnItemSelectedListener(this);
 
-        listaFrutas = new ArrayList<>();
         //Arreglo con nombre de frutas
         strFrutas = new String[] {"Domicilio", "Negocio", "Trabajo"};
         //Agrego las frutas del arreglo `strFrutas` a la listaFrutas
@@ -100,9 +99,7 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             }
         });
         //ID de usuario
-        id = getIntent(
-
-        ).getExtras();
+        id = getIntent().getExtras();
         nombreCompleto = getIntent().getExtras();
         DUI = getIntent().getExtras();
 
@@ -112,6 +109,9 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         ID.setText(IDobtenido);
         nombre.setText("Nombre del Cliente: " +nombreObtenido);
         dui.setText(duiObtenido);
+        //Intent intent = getIntent();
+       // key = intent.getExtras().get("token").toString();
+       // listaFrutas = new ArrayList<>();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED

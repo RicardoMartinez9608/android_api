@@ -76,6 +76,8 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
         Monto= v.findViewById(R.id.txtmonto);
         Plazo = v.findViewById(R.id.txtplazo);
         frecuencia.setOnItemSelectedListener(this);
+        Intent intent = getActivity().getIntent();
+        key = intent.getExtras().get("token").toString();
         FrecuenciaPagos();
         calcular.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,17 +128,15 @@ public class CalculoCredito extends Fragment implements AdapterView.OnItemSelect
 
             }
         });
-
+        //llamado a metodo para ocultar teclado
         setupUI(v.findViewById(R.id.parent));
         return v;
     }
     //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
     public static void hideSoftKeyboard(CalculoCredito activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getContext().getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getActivity().getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) activity.getContext().getSystemService(activity.getContext().INPUT_METHOD_SERVICE);
+        if (activity.getActivity().getCurrentFocus() != null)
+            imm.hideSoftInputFromWindow(activity.getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
     //metodos para poder ocultar el teclado ante una pulsacion en la pantalla
     public void setupUI(View view) {

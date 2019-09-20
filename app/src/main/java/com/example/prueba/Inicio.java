@@ -16,7 +16,7 @@ import android.widget.Button;
  * A simple {@link Fragment} subclass.
  */
 public class Inicio extends Fragment implements View.OnClickListener {
-    Button pagos,localizacion,calculos;
+    Button pagos,localizacion,calculos,preinscrripcion;
 
 
     public Inicio() {
@@ -33,6 +33,7 @@ public class Inicio extends Fragment implements View.OnClickListener {
         pagos = v.findViewById(R.id.btnpagos);
         localizacion = v.findViewById(R.id.btnlocalizacion);
         calculos = v.findViewById(R.id.btncalculo);
+        preinscrripcion = v.findViewById(R.id.btnpreincipcion);
 
         pagos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +70,16 @@ public class Inicio extends Fragment implements View.OnClickListener {
             }
         });
 
+        preinscrripcion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment nuevoFragmento = new PreInscripcion();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_main, nuevoFragmento);
+                transaction.addToBackStack(null);
+                transaction.commitAllowingStateLoss();
+            }
+        });
 
         return v;
     }

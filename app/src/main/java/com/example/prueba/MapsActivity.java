@@ -63,14 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        Actualizar = findViewById(R.id.ActualizarUbicacion);
-        Actualizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // Intent intent = new Intent(v.getContext(), gps.class);
-               // startActivity(intent);
-            }
-        });
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
