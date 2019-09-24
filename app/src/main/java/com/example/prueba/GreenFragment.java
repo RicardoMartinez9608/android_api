@@ -85,7 +85,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         dui=(TextView) v.findViewById(R.id.dui);
         nit=(TextView) v.findViewById(R.id.nit);
         mBotonHablar = v.findViewById(R.id.botonHablar);
-        parametro.setText("03548906-9");
+        parametro.setText("03504301-7");
         checkIfLocationOpened();
 
         buscar.setOnClickListener((View.OnClickListener) this);
@@ -155,6 +155,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
                             verUbicacion.setVisibility(View.INVISIBLE);
                         }
                     }, 1000);
+                    documentos.postDelayed(new Runnable() { public void run() { documentos.setVisibility(View.INVISIBLE); } }, 1000);
                 }
             }
         });
@@ -255,6 +256,7 @@ public class GreenFragment extends Fragment implements View.OnClickListener{
         }
 
     }
+    //verificacion de GPS
     private boolean checkIfLocationOpened() {
         String provider = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         System.out.println("Provider contains=> " + provider);

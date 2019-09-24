@@ -38,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView ID;
     Button regresar, Actualizar;
     private String key;
+    float zoom = 11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +63,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
-
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -130,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LongitudDomicilio =Double.parseDouble( persona.getLongitud_Domicilio());
                     final LatLng punto1 = new LatLng(LatitudDomicilio,LongitudDomicilio);
                     mMap.addMarker(new MarkerOptions().position(punto1).title("Ubicación del Domicilio"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto1));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(punto1,zoom));
 
                 }
                 //carga de valores extraidos de la api para ubicacion del Negocio
@@ -144,7 +143,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Longitudnegocio = Double.parseDouble(persona.getLongitud_Direccion_Negocio());
                     final LatLng punto2 = new LatLng(LatitudNegocio,Longitudnegocio);
                     mMap.addMarker(new MarkerOptions().position(punto2).title("Ubicación del Negocio"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto2));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(punto2,zoom));
                 }
                 //carga de valores extraidos de la api para ubicacion del Trabajo
 
@@ -158,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LongitudTrabajo = Double.parseDouble(persona.getLongitud_Direccion_Trabajo());
                     final LatLng punto3 = new LatLng(LatitudTrabajo,LongitudTrabajo);
                     mMap.addMarker(new MarkerOptions().position(punto3).title("Ubicación del Trabajo"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(punto3));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(punto3,zoom));
                 }
             }
 

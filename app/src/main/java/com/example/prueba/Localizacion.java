@@ -68,11 +68,13 @@ this.lati = lati;
 
     @Override
     public void onProviderEnabled(String s) {
-            tvMensaje.setText("GPS Activado");
+        lon.setText("GPS Activado");
+        lati.setText("GPS Activado");
     }
 
     @Override
     public void onProviderDisabled(String s) {
-            tvMensaje.setText("GPS Desactivado");
+            lon.setText("GPS Desactivado");
+            lati.setText("GPS Desactivado");
     }
 }

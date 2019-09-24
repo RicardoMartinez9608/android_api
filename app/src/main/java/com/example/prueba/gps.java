@@ -64,6 +64,7 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        checkIfLocationOpened();
         LongitudAc = findViewById(R.id.LongitudActual);
         LatitudAC = findViewById(R.id.LatitudActual);
         tvMensaje = findViewById(R.id.tvMensaje);
@@ -89,13 +90,8 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
         Atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_main);
-               // if(getSupportFragmentManager().getBackStackEntryCount() > 0){
-               //     getSupportFragmentManager().popBackStackImmediate();
-                //}else{
                     finish();
 
-               // }
             }
         });
         //ID de usuario
@@ -122,31 +118,49 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             iniciarLocalizacion();
         }
     }
+    //metodo para verificar que el gps este encendido
+    private boolean checkIfLocationOpened() {
+        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        System.out.println("Provider contains=> " + provider);
+        if (provider.contains("gps") || provider.contains("network")){
+            return true;
+        }
+        Toast toast = Toast.makeText(this, "Enciende el GPS", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+        return false;
+    }
 
     private void iniciarLocalizacion(){
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (checkIfLocationOpened()== false){
+            Toast toast = Toast.makeText(this, "Enciende el GPS", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }else {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        Localizacion local = new Localizacion();
+            Localizacion local = new Localizacion();
 
-        local.setGps(this,LatitudAC,LongitudAc);
+            local.setGps(this, LatitudAC, LongitudAc);
 
 
-        final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled){
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
+            final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (!gpsEnabled) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, 0, local);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, 0, local);
+
+            tvMensaje.setText("Localizacion Actual");
         }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},1000);
-            return;
-        }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, 0,local);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, 0,local);
-
-        tvMensaje.setText("Localizacion Actual");
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]grantResults) {
@@ -193,9 +207,6 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
         }
-
-
-
     }
 
 
@@ -206,70 +217,76 @@ public class gps extends AppCompatActivity implements AdapterView.OnItemSelected
 
     @Override
     public void onClick(View view) {
-        //validacion si existe conexion a internet
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Quiere actualizar la Ubicacion de su cliente");
-            builder.setTitle("Satelite");
-            builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    int indice = ubicaciones.getSelectedItemPosition();
-                    String tipo = "";
-                    ConexionApi cp=new ConexionApi();
-                    List<DataHTTP> listData= new ArrayList<DataHTTP>();
-                    if (indice ==0){
-                        tipo = "Domicilio";
-                    }else if (indice == 1){
-                        tipo = "Negocio";
-                    }else if (indice==2){
-                        tipo = "Trabajo";
-                    }
-
-                    String lat = LatitudAC.getText().toString();
-                    String longi = LongitudAc.getText().toString();
-                    Ubicacion_Persona ubicacion = new Ubicacion_Persona();
-                    ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
-                    ubicacion.setTipo_Ubicacion(tipo);
-                    ubicacion.setLat(lat);
-                    ubicacion.setLong(longi);
-                    Gson gson = new Gson();
-                    String JSON = gson.toJson(ubicacion);
-                    listData.add(new DataHTTP("coordenadas",key,"put",JSON));
-                    String gsonCuerpo=new Gson().toJson(listData);
-                    try {
-
-                        String respuestaLogin= cp.execute("http://190.86.177.177/pordefecto/api/Personas/Actualizar_Ubicacion_Persona","Operacion", gsonCuerpo).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
-                    Toast toast = Toast.makeText(getApplicationContext(), "Ubicación actualizada correctamente", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    toast.show();
-
-
-                }
-            });
-
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }else {
-            Toast toast = Toast.makeText(this, "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+        //verificacion si el gps esta activado
+        if (checkIfLocationOpened()== false){
+            Toast toast = Toast.makeText(this, "Enciende el GPS", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
-        }
+        }else {
+            //validacion si existe conexion a internet
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Quiere actualizar la Ubicacion de su cliente");
+                builder.setTitle("Satelite");
+                builder.setPositiveButton("Actualizar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        int indice = ubicaciones.getSelectedItemPosition();
+                        String tipo = "";
+                        ConexionApi cp = new ConexionApi();
+                        List<DataHTTP> listData = new ArrayList<DataHTTP>();
+                        if (indice == 0) {
+                            tipo = "Domicilio";
+                        } else if (indice == 1) {
+                            tipo = "Negocio";
+                        } else if (indice == 2) {
+                            tipo = "Trabajo";
+                        }
 
+                        String lat = LatitudAC.getText().toString();
+                        String longi = LongitudAc.getText().toString();
+                        Ubicacion_Persona ubicacion = new Ubicacion_Persona();
+                        ubicacion.setId_Persona(Integer.parseInt(ID.getText().toString()));
+                        ubicacion.setTipo_Ubicacion(tipo);
+                        ubicacion.setLat(lat);
+                        ubicacion.setLong(longi);
+                        Gson gson = new Gson();
+                        String JSON = gson.toJson(ubicacion);
+                        listData.add(new DataHTTP("coordenadas", key, "put", JSON));
+                        String gsonCuerpo = new Gson().toJson(listData);
+                        try {
+
+                            String respuestaLogin = cp.execute("http://190.86.177.177/pordefecto/api/Personas/Actualizar_Ubicacion_Persona", "Operacion", gsonCuerpo).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast toast = Toast.makeText(getApplicationContext(), "Ubicación actualizada correctamente", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                        toast.show();
+
+
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                Toast toast = Toast.makeText(this, "Conectate a una Red de Internet", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.show();
+            }
+        }
     }
 
     @Override

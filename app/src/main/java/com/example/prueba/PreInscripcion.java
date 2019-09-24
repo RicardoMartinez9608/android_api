@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -62,7 +63,7 @@ public class PreInscripcion extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_pre_inscripcion, container, false);
-
+        checkIfLocationOpened();
         nombres = v.findViewById(R.id.nombreCliente);
         apellidos = v.findViewById(R.id.apellidoCliente);
         dui = v.findViewById(R.id.DUI);
@@ -74,7 +75,14 @@ public class PreInscripcion extends Fragment {
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                preinscripcion();
+                if (checkIfLocationOpened() == false){
+                    Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    preinscripcion();
+                }
+
 
             }
         });
@@ -110,7 +118,18 @@ public class PreInscripcion extends Fragment {
             }
         }
     }
-
+    //verificacion de GPS
+    private boolean checkIfLocationOpened() {
+        String provider = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        System.out.println("Provider contains=> " + provider);
+        if (provider.contains("gps") || provider.contains("network")){
+            return true;
+        }
+        Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+        return false;
+    }
 
 
 

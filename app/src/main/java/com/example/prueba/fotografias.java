@@ -2,6 +2,7 @@ package com.example.prueba;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -85,6 +86,7 @@ public class fotografias extends Fragment {
     String duicliente;
     String nombreCompleto;
     static final int REQUEST_IMAGE_CAPTURE = 20;
+
     public fotografias() {
         // Required empty public constructor
     }
@@ -95,6 +97,8 @@ public class fotografias extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_fotografias, container, false);
+
+      checkIfLocationOpened();
         tipoFoto = v.findViewById(R.id.tipofoto);
         imageView = v.findViewById(R.id.imagen);
         btnfoto = v.findViewById(R.id.tomarFoto);
@@ -119,8 +123,15 @@ public class fotografias extends Fragment {
         btnfoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verificardocumento();
-                //  abrirCamara();
+                if (checkIfLocationOpened() == false){
+                    Toast toast = Toast.makeText(getContext(), "Enciende el GPS", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+                }else{
+                    verificardocumento();
+                }
+
+
             }
         });
         btnenviar.setOnClickListener(new View.OnClickListener() {
@@ -128,10 +139,12 @@ public class fotografias extends Fragment {
             public void onClick(View v) {
 
                 enviar();
+
             }
         });
 
         btnsiguiente = v.findViewById(R.id.siguiente);
+        btnsiguiente.setVisibility(View.INVISIBLE);
 
             btnsiguiente.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -160,7 +173,7 @@ public class fotografias extends Fragment {
 
 
     }
-
+    //metodo para validar que el GPS este encendido
     private boolean checkIfLocationOpened() {
         String provider = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         System.out.println("Provider contains=> " + provider);
@@ -350,43 +363,57 @@ public class fotografias extends Fragment {
     }
 
     public void enviar(){
-        ConexionApi cp=new ConexionApi();
-        int id_documento = 0;
-        int id_persona = Integer.parseInt((String) idcliente.getText());
-      //  int id_persona = 1154;
-        int id_des_documento = Integer.parseInt( iddocumento);
-        String nombreArchivo= "";
-        String base64 = base;
-        Persona persona = null;
-        Boolean es_Imagen = true;
-        Boolean es_PDF = false;
-        enviarFoto  enviarFoto = new enviarFoto();
-        enviarFoto.setId_Documento(id_documento);
-        enviarFoto.setId_Persona(id_persona);
-        enviarFoto.setId_Descripcion_Documento(id_des_documento);
-        enviarFoto.setNombreArchivo(nombreArchivo);
-        enviarFoto.setArchivo_Base64(base64);
-        enviarFoto.setEs_Imagen(es_Imagen);
-        enviarFoto.setEs_PDF(es_PDF);
-        enviarFoto.setPersona(persona);
-        String gsonFoto=new Gson().toJson(enviarFoto);
-        List<DataHTTP> listData= new ArrayList<DataHTTP>();
-        listData.add(new DataHTTP("persona",key,"post",gsonFoto));
-        String gsonCuerpo=new Gson().toJson(listData);
-        try {
-            String respuesta_foto=cp.execute("http://190.86.177.177/pordefecto/api/Documentos/Nuevo_Documento","Operacion",gsonCuerpo).get();
+        if(imageView.getDrawable() == null){
+            Toast toast = Toast.makeText(getContext(), "Tome la fotografia", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
+        }else {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setIcon(R.mipmap.ic_launcher);
+            progressDialog.setMessage("Cargando...");
+            progressDialog.show();
+            ConexionApi cp = new ConexionApi();
+            int id_documento = 0;
+            int id_persona = Integer.parseInt((String) idcliente.getText());
+            int id_des_documento = Integer.parseInt(iddocumento);
+            String nombreArchivo = "";
+            String base64 = base;
+            Persona persona = null;
+            Boolean es_Imagen = true;
+            Boolean es_PDF = false;
+            enviarFoto enviarFoto = new enviarFoto();
+            enviarFoto.setId_Documento(id_documento);
+            enviarFoto.setId_Persona(id_persona);
+            enviarFoto.setId_Descripcion_Documento(id_des_documento);
+            enviarFoto.setNombreArchivo(nombreArchivo);
+            enviarFoto.setArchivo_Base64(base64);
+            enviarFoto.setEs_Imagen(es_Imagen);
+            enviarFoto.setEs_PDF(es_PDF);
+            enviarFoto.setPersona(persona);
+            String gsonFoto = new Gson().toJson(enviarFoto);
+            List<DataHTTP> listData = new ArrayList<DataHTTP>();
+            listData.add(new DataHTTP("persona", key, "post", gsonFoto));
+            String gsonCuerpo = new Gson().toJson(listData);
 
-            if( respuesta_foto.length() >3){
-                Toast toast = Toast.makeText(getContext(), "Fotografia Guardada", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-                imageView.setImageBitmap(null);
+            try {
+                String respuesta_foto = cp.execute("http://190.86.177.177/pordefecto/api/Documentos/Nuevo_Documento", "Operacion", gsonCuerpo).get();
+                if (respuesta_foto.length() > 3) {
+                    progressDialog.dismiss();
+                    Toast toast = Toast.makeText(getContext(), "Fotografia Guardada", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    toast.show();
+
+                    imageView.setImageResource(0);
+                    btnsiguiente.setVisibility(View.VISIBLE);
+                }
+
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         }
 
     }

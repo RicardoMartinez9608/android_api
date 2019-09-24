@@ -1,5 +1,7 @@
 package com.example.prueba;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -40,6 +42,10 @@ public class prueba extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setIcon(R.mipmap.ic_launcher);
+        progressDialog.setMessage("Cargando...");
+        progressDialog.show();
         //validacion si existe conexion a internet
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -62,6 +68,7 @@ public class prueba extends AppCompatActivity implements View.OnClickListener{
                     contrasena.setText("");
 
                 }else {
+
                     Intent pagos_corriente=new Intent(this,MainActivity.class);
                     pagos_corriente.putExtra("token",respuestaLogin.replace('"', ' ').trim());
                     startActivity(pagos_corriente);
@@ -80,7 +87,6 @@ public class prueba extends AppCompatActivity implements View.OnClickListener{
             contrasena.setText("");
         }
     }
-
 
     private class ConexionAPI extends ConexionApi{
         public ConexionAPI(){
